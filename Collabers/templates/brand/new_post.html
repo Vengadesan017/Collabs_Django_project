@@ -1,0 +1,10 @@
+<!-- templates/brand/new_post.html -->
+<h2>Create New Post</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.post_name }}<br>
+  {{ form.detail }}<br>
+  {{ form.budget }}<br>
+  {{ form.max_influencer }}<br>
+  <button type="submit">Create Post</button>
+</form>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup - Collabers</title>
+  <link rel="stylesheet"  href="{% static 'auth/signup.css' %}">
+</head>
+<body>
+  
+  {% if messages %}
+  {% for message in messages %}
+  <div class='alert alert-{{ message.tags }}'>
+    <span class="closebtn">&times;</span>
+    {{ message }}
+  </div>    
+  {% endfor %}
+  {% endif %}
+  
+
+  <div class="signup-box">
+    <h2>COLLABERS</h2>
+    <p>Create your account</p>
+    <form id="signupForm" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" required />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password1" required />
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" name="password2" required />
+      </div>
+      <div class="form-group">
+        <label>Select your role</label>
+        <select id="roleSelect" name="role" required>
+          <option value="">-- Choose Role --</option>
+          <option value="influencer">Influencer</option>
+          <option value="brand">Brand</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <!-- Influencer fields -->
+      <div id="influencerFields" class="conditional-fields">
+        <div class="form-group">
+          <label>Niche</label>
+          <input type="text" name="influencer_niche" placeholder="e.g. Tech, Travel, Fitness" />
+        </div>
+        <div class="form-group">
+          <label>Channel ID</label>
+          <input type="text" name="influencer_channel_id" placeholder="YouTube/Instagram ID" />
+        </div>
+      </div>
+
+      <!-- Brand fields -->
+      <div id="brandFields" class="conditional-fields">
+        <div class="form-group">
+          <label>Niche</label>
+          <input type="text" name="brand_niche" placeholder="e.g. Fashion, Food, Electronics" />
+        </div>
+        <div class="form-group">
+          <label>Brand Name</label>
+          <input type="text" name="brand_name" placeholder="Your Brand Name" />
+        </div>
+      </div>
+
+      <button class="btn" type="submit">Sign Up</button>
+     <a href="{% url 'auth:login' %}">Already have an account? Login</a>
+    </form>
+  </div>
+
+  <script>
+    const roleSelect = document.getElementById('roleSelect');
+    const influencerFields = document.getElementById('influencerFields');
+    const brandFields = document.getElementById('brandFields');
+
+    roleSelect.addEventListener('change', function () {
+      const role = roleSelect.value;
+
+      // Hide all initially
+      influencerFields.style.display = 'none';
+      brandFields.style.display = 'none';
+
+      if (role === 'influencer') {
+        influencerFields.style.display = 'block';
+      } else if (role === 'brand') {
+        brandFields.style.display = 'block';
+      }
+      // Admin needs no additional fields
+    });
+  </script>
+</body>
+</html>

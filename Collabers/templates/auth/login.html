@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Collabers</title>
+  <link rel="stylesheet"  href="{% static 'auth/login.css' %}">
+</head>
+<body>
+
+  {% if messages %}
+  {% for message in messages %}
+  <div class='alert alert-{{ message.tags }}'>
+    <span class="closebtn">&times;</span>
+    {{ message }}
+  </div>    
+  {% endfor %}
+  {% endif %}
+
+  <div class="login-box">
+    <h2>COLLABERS</h2>
+    <p>Login to Collabers</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter username" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter password" />
+      </div>
+      <button class="btn" type="submit">Login</button>
+      <a href="{% url 'auth:signup' %}">Don't have an account? Sign up</a>
+    </form>
+  </div>
+</body>
+</html>

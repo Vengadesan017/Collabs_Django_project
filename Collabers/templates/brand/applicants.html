@@ -1,0 +1,18 @@
+<!-- templates/brand/applicants.html -->
+<h2>Applicants</h2>
+{% if posts %}
+  <ul>
+
+        {% for post in posts %}
+      <li><a href="{% url "brand:filter_applicants" appli_id=post.post_id %}">viewww</a>
+        <strong>{{ post.post_name }}</strong><br>
+        {{ post.detail }}<br>
+        Budget: {{ post.budget }}<br>
+        Max Influencers: {{ post.max_influencer }}<br>
+        {{post.is_open}} - {{ post.applicant_count }}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No posts found.</p>
+{% endif %}

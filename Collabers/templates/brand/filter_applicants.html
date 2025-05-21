@@ -1,0 +1,22 @@
+<!-- templates/brand/applicants.html -->
+<h2>Applicants</h2>
+{% if applicants %}
+  <ul>
+    {% for applicant in applicants %}
+      <li>
+        Influencer: {{ applicant.influencer.channel_name }}<br>
+        Post: {{ applicant.post.post_name }}<br>
+        Efficiency: {{ applicant.efficiency_prob }}<br>
+        Amount: {{ applicant.amount }}<br>
+        {% if applicant.ads_file %}
+        File: <a href="{{ applicant.ads_file.url }}">View File</a><br>
+        {% else%}
+        File : Not added <br>
+        {% endif %}
+        URL: <a href="{{ applicant.url }}">{{ applicant.url }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No applicants found.</p>
+{% endif %}

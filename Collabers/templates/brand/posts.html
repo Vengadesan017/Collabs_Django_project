@@ -1,0 +1,21 @@
+<!-- templates/brand/posts.html -->
+ <a href="{% url "brand:new_post" %}">New post</a>
+ <a href="{% url "brand:filter_post" filter='active' %}">Active post</a>
+ <a href="{% url "brand:filter_post" filter='in-active' %}">Inactive post</a>
+ <a href="{% url "brand:post" %}">All post</a>
+<h2>Your Posts</h2>
+{% if posts %}
+  <ul>
+    {% for post in posts %}
+      <li>
+        <strong>{{ post.post_name }}</strong><br>
+        {{ post.detail }}<br>
+        Budget: {{ post.budget }}<br>
+        Max Influencers: {{ post.max_influencer }}<br>
+        {{post.is_open}}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No posts found.</p>
+{% endif %}

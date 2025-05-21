@@ -1,0 +1,16 @@
+<!-- templates/brand/verification.html -->
+<h2>Verified Applicants</h2>
+{% if verified_applicants %}
+  <ul>
+    {% for app in verified_applicants %}
+      <li>
+        Influencer: {{ app.influencer.channel_name }}<br>
+        Post: {{ app.post.post_name }}<br>
+        Verified: {{ app.is_verified }}<br>
+        Remarks: {{ app.remarks }}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No verified applicants yet.</p>
+{% endif %}
