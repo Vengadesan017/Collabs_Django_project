@@ -1,0 +1,51 @@
+    {% extends "influencer/layout.html" %}
+
+{% block title %}
+
+{% endblock title %}
+{% load static %}
+{% block statics %}
+
+{% endblock statics %}
+
+{% block content %}
+
+
+    <h1>Payment Summary</h1>
+
+    <h2>Paid Applications</h2>
+    <table border="1">
+        <tr>
+            <th>Post</th>
+            <th>Amount</th>
+            <th>Confirmed</th>
+        </tr>
+        {% for app in paid %}
+        <tr>
+            <td>{{ app.post.post_name }}</td>
+            <td>{{ app.amount }}</td>
+            <td>{{ app.is_confirmed }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No paid applications.</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Unpaid Applications</h2>
+    <table border="1">
+        <tr>
+            <th>Post</th>
+            <th>Amount</th>
+            <th>Confirmed</th>
+        </tr>
+        {% for app in unpaid %}
+        <tr>
+            <td>{{ app.post.post_name }}</td>
+            <td>{{ app.amount }}</td>
+            <td>{{ app.is_confirmed }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No unpaid applications.</td></tr>
+        {% endfor %}
+    </table>
+{% endblock content %}

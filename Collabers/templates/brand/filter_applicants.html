@@ -1,22 +1,47 @@
-<!-- templates/brand/applicants.html -->
+{% extends "brand/layout.html" %}
+
+{% block title %}
+
+{% endblock title %}
+{% load static %}
+{% block statics %}
+
+{% endblock statics %}
+
+{% block content %}
+
+
+
+
 <h2>Applicants</h2>
 {% if applicants %}
-  <ul>
-    {% for applicant in applicants %}
-      <li>
-        Influencer: {{ applicant.influencer.channel_name }}<br>
-        Post: {{ applicant.post.post_name }}<br>
-        Efficiency: {{ applicant.efficiency_prob }}<br>
-        Amount: {{ applicant.amount }}<br>
-        {% if applicant.ads_file %}
-        File: <a href="{{ applicant.ads_file.url }}">View File</a><br>
-        {% else%}
-        File : Not added <br>
-        {% endif %}
-        URL: <a href="{{ applicant.url }}">{{ applicant.url }}</a>
-      </li>
-    {% endfor %}
-  </ul>
+ <ul>
+   {% for applicant in applicants %}
+     <li>
+       Influencer: {{ applicant.influencer.channel_name }}<br>
+       Post: {{ applicant.post.post_name }}<br>
+       Efficiency: {{ applicant.efficiency_prob }}<br>
+       Amount: {{ applicant.amount }}<br>
+       {% comment %} {% if applicant.ads_file %}
+       File: <a class="button" href="{{ applicant.ads_file.url }}">View File</a><br>
+       {% else %}
+       File: Not added<br>
+       {% endif %}
+       URL: <a class="button" href="{{ applicant.url }}">{{ applicant.url }}</a><br> {% endcomment %}
+
+       {% if not applicant.is_confirmed %}
+         <form method="post" action="#">
+           {% csrf_token %}
+           <input type="hidden" name="id" value="{{applicant.appli_id}}">
+           <button class="button" type="submit">Confirm This Influencer</button>
+         </form>
+       {% else %}
+         <strong>Status: Confirmed</strong>
+       {% endif %}
+     </li>
+   {% endfor %}
+ </ul>
 {% else %}
-  <p>No applicants found.</p>
+ <p>No applicants found.</p>
 {% endif %}
+ {% endblock content%}

@@ -10,8 +10,8 @@ def is_brand(view_func):
                 return view_func(request, *args, **kwargs)
             else:
                 messages.error(request, "Access denied. Brand account required.")
-                return redirect('login')
+                return redirect('auth:login')
         except Exception as e:
-            messages.error(request, "Something went wrong. Please try again.")
-            return redirect('login')
+            messages.error(request, f"Something went wrong. Please try again:{e}")
+            return redirect('auth:login')
     return wrapper

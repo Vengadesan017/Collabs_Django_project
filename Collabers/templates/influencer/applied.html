@@ -1,0 +1,141 @@
+{% extends "influencer/layout.html" %}
+
+{% block title %}
+
+{% endblock title %}
+{% load static %}
+{% block statics %}
+
+{% endblock statics %}
+
+{% block content %}
+
+
+    <div>
+        <a class="button" href="{% url 'influencer:applied' filter='all' %}">All</a> |
+        <a class="button" href="{% url 'influencer:applied' filter='pending' %}">⏳ Pending</a> |
+        <a class="button" href="{% url 'influencer:applied' filter='in-work' %}">💼 In work</a> |
+        <a class="button" href="{% url 'influencer:applied' filter='verification-wait' %}">🚫 Waithing for verification</a> |
+        <a class="button" href="{% url 'influencer:applied' filter='verified' %}">✔️ Verified</a> |
+        <a class="button" href="{% url 'influencer:applied' filter='running' %}">✅ Running Ads</a>
+        <a class="button" href="{% url 'influencer:applied' filter='in-active' %}">❌ Inactive Ads</a>
+    </div>
+    <br>   
+   
+   <h1>My Applications - {{ filter|title }}</h1>
+    <table border="1">
+        <tr>
+            <th>Post</th>
+            <th>Detail</th>
+            <th>Efficiency</th>
+            <th>Confirmed</th>
+            <th>Worked</th>
+            <th>status</th>
+            <th>Action</th>
+        </tr>
+        {% for app in applicants %}
+        <tr>
+            <td>{{ app.post.post_name }}</td>
+            <td>{{ app.post.detail }}</td>
+            <td>{{ app.efficiency_prob }}</td>
+            <td>{{ app.is_confirmed }}</td>
+            <td>{{ app.is_worked }}</td>
+
+        {% if app.is_stoped %}
+            <td>
+                <strong>Stoped</strong>
+            {% if applicant.ads_file %}
+            File: <a class="button" href="{{ app.ads_file.url }}">View File</a><br>
+            {% else %}
+            File: Not added<br>
+            {% endif %}
+            URL: <a class="button" href="{{ app.url }}">{{ app.url }}</a><br> 
+            Summary: {{ app.summary }}<br> 
+            </td>
+            <td>
+                <form method="POST" action="#" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{app.appli_id}}">
+                    <button class="button" type="submit" name="run_again">Run again</button>
+                </form>
+            </td>
+        {% elif app.is_posted %}
+            <td>
+                <strong>Ads Running successfully</strong>
+            {% if applicant.ads_file %}
+            File: <a class="button" href="{{ app.ads_file.url }}">View File</a><br>
+            {% else %}
+            File: Not added<br>
+            {% endif %}
+            URL: <a class="button" href="{{ app.url }}">{{ app.url }}</a><br> 
+            Summary: {{ app.summary }}<br> 
+            </td>
+            <td>
+                <form method="POST" action="#" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{app.appli_id}}">
+                    <button class="button" type="submit" name="stop">Stop the ads</button>
+                </form>
+            </td>
+        {% elif app.is_verified %}
+            <td>
+                <strong>Ads verified. Let publist the ads</strong>
+          {% if applicant.ads_file %}
+            File: <a class="button" href="{{ app.ads_file.url }}">View File</a><br>
+            {% else %}
+            File: Not added<br>
+            {% endif %}
+            URL: <a class="button" href="{{ app.url }}">{{ app.url }}</a><br> 
+            Summary: {{ app.summary }}<br> 
+            </td>
+            <td>
+                <form method="POST" action="#" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{app.appli_id}}">
+                    <button class="button" type="submit" name="publish">Published</button>
+                </form>
+            </td>
+        {% elif app.is_worked %}
+            <td>
+                <strong>Waiting for bran verification</strong>
+            {% if applicant.ads_file %}
+            File: <a class="button" href="{{ app.ads_file.url }}">View File</a><br>
+            {% else %}
+            File: Not added<br>
+            {% endif %}
+            URL: <a class="button" href="{{ app.url }}">{{ app.url }}</a><br> 
+            Summary: {{ app.summary }}<br> 
+            </td>
+            <td>
+
+            </td>
+        {% elif app.is_confirmed %}
+            <td>
+                <strong>Waiting for your respone. complete the work and upload for verifivation</strong>
+            </td>
+            <td>
+                <form method="POST" action="#" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{app.appli_id}}">
+                    <input type="url" name="url" id="" placeholder="Any private URL">
+                    <input type="file" name="ads_file" id="" placeholder="Ad file">
+                    <textarea name="summary" id="" placeholder="Give summary about your ads to Brand"></textarea>
+                    <button class="button" type="submit" name="work_completed">Upload the ad for inflencer approval</button>
+                </form>
+            </td>
+        {% else %}
+            <td>
+                <strong>Pending. waiting for Brand confirmation</strong>
+            </td>
+            <td>
+
+            </td>
+        {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No applications found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock content %}

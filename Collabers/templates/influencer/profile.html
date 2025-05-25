@@ -1,0 +1,24 @@
+    {% extends "influencer/layout.html" %}
+
+{% block title %}
+
+{% endblock title %}
+{% load static %}
+{% block statics %}
+
+{% endblock statics %}
+
+{% block content %}
+
+<h1>My Profile</h1>
+    <ul>
+        <li><strong>Channel Name:</strong> {{ influencer.channel_name }}</li>
+        <li><strong>Channel ID:</strong> {{ influencer.channel_id }}</li>
+        <li><strong>Niche:</strong> {{ influencer.channel_niche }}</li>
+        <li><strong>Followers:</strong> {{ influencer.channel_follower }}</li>
+        <li><strong>Engagement Rate:</strong> {{ influencer.channel_engagement_rate }}</li>
+        <li><strong>Average Likes:</strong> {{ influencer.channel_avg_like }}</li>
+        <li><strong>Average Comments:</strong> {{ influencer.channel_avg_comments }}</li>
+        <li><strong>Wallet:</strong> ₹{{ influencer.wallet }}</li>
+    </ul>
+{% endblock content %}

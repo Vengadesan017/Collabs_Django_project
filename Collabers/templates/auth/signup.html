@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Signup - Collabers</title>
   <link rel="stylesheet"  href="{% static 'auth/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'influencer/error.css' %}" />
 </head>
 <body>
   
@@ -27,19 +28,24 @@
       {% csrf_token %}
       <div class="form-group">
         <label>Email</label>
-        <input type="email" name="email" required />
+        {% comment %} <input type="email" name="email" required /> {% endcomment %}
+        {{ form.email}}
       </div>
       <div class="form-group">
         <label>Username</label>
-        <input type="text" name="username" required />
+        {% comment %} <input type="text" name="username" required /> {% endcomment %}
+        {{ form.username}}
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" name="password1" required />
+        {% comment %} <input type="password" name="password1" required /> {% endcomment %}
+        {{ form.password1}}
       </div>
       <div class="form-group">
         <label>Confirm Password</label>
-        <input type="password" name="password2" required />
+        {% comment %} <input type="password" name="password2" required />
+         {% endcomment %}
+         {{form.password2}}
       </div>
       <div class="form-group">
         <label>Select your role</label>
@@ -55,11 +61,19 @@
       <div id="influencerFields" class="conditional-fields">
         <div class="form-group">
           <label>Niche</label>
-          <input type="text" name="influencer_niche" placeholder="e.g. Tech, Travel, Fitness" />
+    <select name="influencer_niche" class="form-control">
+      {% for value, label in brand.brand_niche.field.choices %}
+        <option value="{{ value }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+        </div>
+        <div class="form-group">
+          <label>Channel Name</label>
+          <input type="text" name="influencer_channel_name" placeholder="YouTube/Instagram name" />
         </div>
         <div class="form-group">
           <label>Channel ID</label>
-          <input type="text" name="influencer_channel_id" placeholder="YouTube/Instagram ID" />
+          <input type="number" name="influencer_channel_id" placeholder="YouTube/Instagram ID" />
         </div>
       </div>
 
@@ -67,7 +81,12 @@
       <div id="brandFields" class="conditional-fields">
         <div class="form-group">
           <label>Niche</label>
-          <input type="text" name="brand_niche" placeholder="e.g. Fashion, Food, Electronics" />
+    <select name="brand_niche" class="form-control">
+      {% for value, label in brand.brand_niche.field.choices %}
+        <option value="{{ value }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+          
         </div>
         <div class="form-group">
           <label>Brand Name</label>

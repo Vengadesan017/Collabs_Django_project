@@ -23,7 +23,7 @@ urlpatterns = [
     path('', include('auths.urls')),
     path('influencer/', include('influencer.urls')),
     path('brand/', include('brand.urls')),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
 ]
 
 

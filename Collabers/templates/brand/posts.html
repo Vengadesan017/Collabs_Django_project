@@ -1,8 +1,23 @@
+{% extends "brand/layout.html" %}
+
+{% block title %}
+
+{% endblock title %}
+{% load static %}
+{% block statics %}
+
+{% endblock statics %}
+
+{% block content %}
+
+
+
+
 <!-- templates/brand/posts.html -->
- <a href="{% url "brand:new_post" %}">New post</a>
- <a href="{% url "brand:filter_post" filter='active' %}">Active post</a>
- <a href="{% url "brand:filter_post" filter='in-active' %}">Inactive post</a>
- <a href="{% url "brand:post" %}">All post</a>
+ <a class="button" href="{% url "brand:new_post" %}">New post</a>
+ <a class="button" href="{% url "brand:filter_post" filter='active' %}">Active post</a>
+ <a class="button" href="{% url "brand:filter_post" filter='in-active' %}">Inactive post</a>
+ <a class="button" href="{% url "brand:post" %}">All post</a>
 <h2>Your Posts</h2>
 {% if posts %}
   <ul>
@@ -19,3 +34,4 @@
 {% else %}
   <p>No posts found.</p>
 {% endif %}
+ {% endblock content%}

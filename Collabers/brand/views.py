@@ -58,7 +58,7 @@ def FilterPost_view(request, filter):
             posts = Post.objects.filter(is_open=False, brand__brand_acc=account).order_by('-post_id')
         return render(request, 'brand/posts.html', {'posts': posts, 'filter': filter})
     except Exception:
-        messages.error(request, f"Error filtering posts:{e}")
+        messages.error(request, f"Error filtering posts:{Exception}")
         return redirect('brand:post')
 
 @login_required
@@ -80,17 +80,40 @@ def Applicants_view(request):
 
 @login_required
 @is_brand
-def ApplicantsFilter_view(request,appli_id):
+def ApplicantsFilter_view(request,post_id):
     account = Account.objects.get(user=request.user)
-    applicants = Applicant.objects.filter(post=appli_id).order_by('-efficiency_prob')
-    print(applicants)
+    if request.method == 'POST':
+        applicant = get_object_or_404(Applicant, appli_id=request.POST.get('id'))
+        applicant.is_confirmed = True
+        applicant.save()
+        messages.success(request, "Applicant is confirmed successfully.")
+        return redirect("brand:filter_applicants", post_id=post_id)
+    applicants = Applicant.objects.filter(post=post_id).order_by('-efficiency_prob')
     return render(request, 'brand/filter_applicants.html', {'applicants': applicants})
 
 @login_required
 @is_brand
-def Verification_view(request):
+def Verification_view(request,filter):
     account = Account.objects.get(user=request.user)
-    verified_applicants = Applicant.objects.filter(is_verified=True)
+    if request.method == 'POST':
+        applicant = get_object_or_404(Applicant, appli_id=request.POST.get('id'))
+        applicant.is_verified = True
+        applicant.remarks = request.POST.get('remarks')
+        applicant.save()
+        messages.success(request, "Applicant is Verified successfully.")
+        return redirect("brand:verification", filter='actioned')
+    if filter == 'running':
+        verified_applicants = Applicant.objects.filter(post__brand__brand_acc=account,is_confirmed=True,is_posted=True,is_stoped=False).order_by('-is_worked')
+    elif filter == 'closed':
+        verified_applicants = Applicant.objects.filter(post__brand__brand_acc=account,is_confirmed=True,is_stoped=True).order_by('-is_worked')
+    elif filter == 'verified':
+        verified_applicants = Applicant.objects.filter(post__brand__brand_acc=account,is_confirmed=True,is_posted=False,is_stoped=False,is_worked=True,is_verified=False).order_by('-is_worked')
+    elif filter == 'complete':
+        verified_applicants = Applicant.objects.filter(post__brand__brand_acc=account,is_confirmed=True,is_posted=False,is_stoped=False,is_worked=False,is_verified=False).order_by('-is_worked')
+    elif filter == 'publish':
+        verified_applicants = Applicant.objects.filter(post__brand__brand_acc=account,is_confirmed=True,is_posted=False,is_stoped=False,is_worked=True,is_verified=True).order_by('-is_worked')
+    else:
+        verified_applicants = Applicant.objects.filter(post__brand__brand_acc=account).order_by('-is_worked')
     return render(request, 'brand/verification.html', {'verified_applicants': verified_applicants})
 
 @login_required

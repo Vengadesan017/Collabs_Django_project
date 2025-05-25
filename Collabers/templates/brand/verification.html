@@ -1,16 +1,83 @@
+{% extends "brand/layout.html" %}
+
+{% block title %}
+
+{% endblock title %}
+{% load static %}
+{% block statics %}
+
+{% endblock statics %}
+
+{% block content %}
+
+
+
+
 <!-- templates/brand/verification.html -->
+
+<a class="button" href="{% url "brand:verification" filter='all' %}">All Ads</a>
+<a class="button" href="{% url "brand:verification" filter='complete' %}">Waiting for influencer to complete</a>
+<a class="button" href="{% url "brand:verification" filter='verified' %}">Waiting for verification</a>
+<a class="button" href="{% url "brand:verification" filter='publish' %}">Waiting for influencer to publish</a>
+<a class="button" href="{% url "brand:verification" filter='running' %}">Running Ads</a>
+<a class="button" href="{% url "brand:verification" filter='closed' %}">Cloased Ads</a>
+
 <h2>Verified Applicants</h2>
 {% if verified_applicants %}
   <ul>
-    {% for app in verified_applicants %}
+    {% for applicant in verified_applicants %}
       <li>
-        Influencer: {{ app.influencer.channel_name }}<br>
-        Post: {{ app.post.post_name }}<br>
-        Verified: {{ app.is_verified }}<br>
-        Remarks: {{ app.remarks }}
+        Post: {{ applicant.post.post_name }}<br>
+        Influencer: {{ applicant.influencer.channel_name }}<br>
+        Efficiency: {{ applicant.efficiency_prob }}<br>
+        Amount: {{ applicant.amount }}<br>
+
+
+        {% if applicant.is_stoped %}
+            <strong>Status: Ads Closed</strong>
+        {% elif applicant.is_posted %}
+          {% if applicant.ads_file %}
+            File: <a class="button" href="{{ applicant.ads_file.url }}">View File</a><br>
+            {% else %}
+            File: Not added<br>
+            {% endif %}
+            URL: <a class="button" href="{{ applicant.url }}">{{ applicant.url }}</a><br> 
+            Summary: {{ applicant.summary }}<br> 
+            <strong>Status: Ads Running</strong>
+        {% elif applicant.is_verified %}
+          {% if applicant.ads_file %}
+            File: <a class="button" href="{{ applicant.ads_file.url }}">View File</a><br>
+            {% else %}
+            File: Not added<br>
+            {% endif %}
+            URL: <a class="button" href="{{ applicant.url }}">{{ applicant.url }}</a><br> 
+            Summary: {{ applicant.summary }}<br> 
+            <strong>Status: Ads Verified</strong>
+        {% elif applicant.is_worked %}
+          {% if applicant.ads_file %}
+            File: <a class="button" href="{{ applicant.ads_file.url }}">View File</a><br>
+            {% else %}
+            File: Not added<br>
+            {% endif %}
+            URL: <a class="button" href="{{ applicant.url }}">{{ applicant.url }}</a><br> 
+            Summary: {{ applicant.summary }}<br> 
+          <form method="post" action="#">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{applicant.appli_id}}">
+            <textarea name="remarks" id="" placeholder="Any remarks about this ads"></textarea>
+            <button class="button" type="submit">Publish Ad</button>
+          </form>
+        {% elif applicant.is_confirmed %}
+            <strong>Status: Wait for influencer to complete the ads</strong>
+        {% else %}
+          <strong>Status: Pending</strong>
+        {% endif %}
       </li>
+
     {% endfor %}
   </ul>
 {% else %}
   <p>No verified applicants yet.</p>
 {% endif %}
+
+ {% endblock content%}

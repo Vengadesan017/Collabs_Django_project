@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      {% block title %}
+
+      <title>Collabers</title>
+      {% endblock %}
+    <link rel="stylesheet" href="{% static 'influencer/influencer.css' %}" />
+    <link rel="stylesheet" href="{% static 'brand/brand.css' %}" />
+    <link rel="stylesheet" href="{% static 'influencer/error.css' %}" />
+    {% block statics %}
+
+    {% endblock %}
+    <script src="{% static 'js/recruiters/nav.js' %}" defer></script>
+
+    <style>
+
+
+    </style>  
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Collabers</h2>
+      <a href="{% url 'influencer:collabs' %}">Collabs</a>
+      <a href="{% url 'influencer:applied' filter='all' %}">Status</a>
+      <a href="{% url 'influencer:payment' %}">Payment</a>
+      <a href="{% url 'influencer:profile' %}">Profile</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+      <div class="topbar">
+        <div class="tab">Influencer</div>
+        <div class="search-bar">
+          <input type="text" placeholder="Search" />
+        </div>
+      </div>
+  {% if messages %}
+    <div class="message-container">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+
+                {% block content %}
+
+                {% endblock %}
+      {% comment %} <!-- Opportunity Cards -->
+      <div class="opportunity-card">
+        <h3>Brand Name</h3>
+        <p>About the ad</p>
+        <button class="apply-btn">Apply</button>
+      </div>
+
+      <div class="opportunity-card">
+        <h3>Brand Name</h3>
+        <p>About the ad</p>
+        <button class="apply-btn">Apply</button>
+      </div>
+    </div> 
+    
+          <form>
+        <div class="form-group">
+          <label for="brand-name">Brand Name</label>
+          <input type="text" id="brand-name" name="brand-name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="ad-details">Ad details</label>
+          <input type="text" id="ad-details" name="ad-details" required />
+        </div>
+
+        <div class="form-group">
+          <label for="budget">Budget for each influencer</label>
+          <input type="text" id="budget" name="budget" required />
+        </div>
+
+        <div class="form-group">
+          <label for="collabs">No. of collabs</label>
+          <input type="number" id="collabs" name="collabs" required />
+        </div>
+
+        <button type="submit"           <form>
+        <div class="form-group">
+          <label for="brand-name">Brand Name</label>
+          <input type="text" id="brand-name" name="brand-name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="ad-details">Ad details</label>
+          <input type="text" id="ad-details" name="ad-details" required />
+        </div>
+
+        <div class="form-group">
+          <label for="budget">Budget for each influencer</label>
+          <input type="text" id="budget" name="budget" required />
+        </div>
+
+        <div class="form-group">
+          <label for="collabs">No. of collabs</label>
+          <input type="number" id="collabs" name="collabs" required />
+        </div>
+
+        <button type="submit" class="submit-btn">Proceed for payment to post</button>
+      </form>          <form>
+        <div class="form-group">
+          <label for="brand-name">Brand Name</label>
+          <input type="text" id="brand-name" name="brand-name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="ad-details">Ad details</label>
+          <input type="text" id="ad-details" name="ad-details" required />
+        </div>
+
+        <div class="form-group">
+          <label for="budget">Budget for each influencer</label>
+          <input type="text" id="budget" name="budget" required />
+        </div>
+
+        <div class="form-group">
+          <label for="collabs">No. of collabs</label>
+          <input type="number" id="collabs" name="collabs" required />
+        </div>
+
+        <button type="submit" class="submit-btn">Proceed for payment to post</button>
+      </form>Proceed for payment to post</button>
+      </form>
+    {% endcomment %}
+
+
+  </div>
+</body>
+</html>
