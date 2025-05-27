@@ -28,9 +28,10 @@
       <h2>Collabers</h2>
       <a href="{% url 'brand:post' %}">Collabs</a>
       {% comment %} <a href="{% url 'brand:filter_post' filter='all' %}">Status</a> {% endcomment %}
-      <a href="{% url 'brand:applicants' %}">Status</a>
+      {% comment %} <a href="{% url 'brand:applicants' %}">Status</a> {% endcomment %}
       {% comment %} <a href="{% url 'influencer:filter_applicants' post_id=''%}">Payment</a> {% endcomment %}
-      <a href="{% url 'brand:verification' filter='all' %}">Verification</a>
+      <a href="{% url 'brand:verification' filter='all' %}">Status</a>
+      <a href="{% url 'brand:payment' %}">Payment</a>
       <a href="{% url 'brand:profile' %}">Profile</a>
     </div>
 
@@ -38,6 +39,9 @@
     <div class="main">
       <div class="topbar">
         <div class="tab">Brand</div>
+        {% block page_name %}
+        
+        {% endblock page_name %}
         <div class="search-bar">
           <input type="text" placeholder="Search" />
         </div>

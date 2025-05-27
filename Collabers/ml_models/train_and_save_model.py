@@ -23,6 +23,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Create the XGBoost regressor
 model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, max_depth=4, learning_rate=0.1)
+# model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='logloss')
 
 # Train the model
 model.fit(X_train, y_train)

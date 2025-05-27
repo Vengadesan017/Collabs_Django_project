@@ -8,6 +8,13 @@
 
 {% endblock statics %}
 
+{% block page_name %}
+>
+ <div class="tab">Status</div> 
+ >
+ <div class="tab">View Status of your ad posts</div>
+{% endblock page_name %}
+
 {% block content %}
 
 
@@ -24,60 +31,189 @@
 
 <h2>Verified Applicants</h2>
 {% if verified_applicants %}
-  <ul>
+  
     {% for applicant in verified_applicants %}
-      <li>
-        Post: {{ applicant.post.post_name }}<br>
-        Influencer: {{ applicant.influencer.channel_name }}<br>
-        Efficiency: {{ applicant.efficiency_prob }}<br>
-        Amount: {{ applicant.amount }}<br>
+
+      <div class="opportunity-card">
+        <div class="row">
+          
+          <h3>Post: {{ applicant.post.post_name }}</h3> 
+          <h3>Influencer: {{ applicant.influencer.channel_name }}</h3>
+          {% comment %} <a class="apply-btn" href="{% url "brand:filter_applicants" post_id=applicant.post.post_id %}">View {{ applicant.post.applicant_count }} Applicants</a> {% endcomment %}
+        </div>
 
 
         {% if applicant.is_stoped %}
-            <strong>Status: Ads Closed</strong>
+        <div class="row">
+          <div class="button" style="width: 80%; background-color: gray; margin: auto;">Status: Ads Closed</div>
+        </div>
         {% elif applicant.is_posted %}
-          {% if applicant.ads_file %}
-            File: <a class="button" href="{{ applicant.ads_file.url }}">View File</a><br>
-            {% else %}
-            File: Not added<br>
-            {% endif %}
-            URL: <a class="button" href="{{ applicant.url }}">{{ applicant.url }}</a><br> 
-            Summary: {{ applicant.summary }}<br> 
-            <strong>Status: Ads Running</strong>
+            <div class="row">
+                        {% if applicant.ads_file %}
+                          {% with applicant.ads_file.url as file_url %}
+                              {% if ".jpg" in file_url or ".jpeg" in file_url or ".png" in file_url or ".gif" in file_url %}
+                                  <img src="{{ file_url }}" alt="Ad Image" style="height: 150px; width: auto;">
+                              {% elif ".mp4" in file_url or ".webm" in file_url or ".ogg" in file_url %}
+                                  <video controls style="height: 150px; width: auto;">
+                                      <source src="{{ file_url }}">
+                                      Your browser does not support the video tag.
+                                  </video>
+                              {% elif ".mp3" in file_url or ".wav" in file_url %}
+                                  <audio controls style="height: 150px; width: auto;">
+                                      <source src="{{ file_url }}">
+                                      Your browser does not support the audio tag.
+                                  </audio>
+                              {% elif ".pdf" in file_url %}
+                                  <embed src="{{ file_url }}" type="application/pdf" width="auto" height="150px" />
+                              {% else %}
+                                  File: <a class="apply-btn" href="{{ file_url }}" target="_blank">View File</a><br>
+                              {% endif %}
+                          {% endwith %}
+                        {% else %}
+                            File: Not added<br>
+                        {% endif %}
+                        {% if applicant.ads_file %}
+                        <span>
+                          File: <a class="apply-btn" href="{{ applicant.ads_file.url }}">View File</a>
+                        </span>
+                          {% else %}
+                          <span>
+                              File: Not added<br>
+                          </span>
+                          {% endif %}
+                          <span>Private URL: <a class="apply-btn" href="{{ applicant.url }}">{{ applicant.url }}</a></span>
+                  </div>
+                  <div class="row">
+                    <span>
+                      Summary:  {{ applicant.summary }}
+                    </span>
+                    <span>
+                      Remarks:  {{ applicant.remarks }}
+                    </span>
+                  </div>
+                  <div class="row">
+
+                    <div class="button" style="width: 80%; background-color: gray; margin: auto;">Status: Ads Running</div>
+                  </div>
         {% elif applicant.is_verified %}
-          {% if applicant.ads_file %}
-            File: <a class="button" href="{{ applicant.ads_file.url }}">View File</a><br>
-            {% else %}
-            File: Not added<br>
-            {% endif %}
-            URL: <a class="button" href="{{ applicant.url }}">{{ applicant.url }}</a><br> 
-            Summary: {{ applicant.summary }}<br> 
-            <strong>Status: Ads Verified</strong>
+
+                  <div class="row">
+                        {% if applicant.ads_file %}
+                          {% with applicant.ads_file.url as file_url %}
+                              {% if ".jpg" in file_url or ".jpeg" in file_url or ".png" in file_url or ".gif" in file_url %}
+                                  <img src="{{ file_url }}" alt="Ad Image" style="height: 150px; width: auto;">
+                              {% elif ".mp4" in file_url or ".webm" in file_url or ".ogg" in file_url %}
+                                  <video controls style="height: 150px; width: auto;">
+                                      <source src="{{ file_url }}">
+                                      Your browser does not support the video tag.
+                                  </video>
+                              {% elif ".mp3" in file_url or ".wav" in file_url %}
+                                  <audio controls style="height: 150px; width: auto;">
+                                      <source src="{{ file_url }}">
+                                      Your browser does not support the audio tag.
+                                  </audio>
+                              {% elif ".pdf" in file_url %}
+                                  <embed src="{{ file_url }}" type="application/pdf" width="auto" height="150px" />
+                              {% else %}
+                                  File: <a class="apply-btn" href="{{ file_url }}" target="_blank">View File</a><br>
+                              {% endif %}
+                          {% endwith %}
+                        {% else %}
+                            File: Not added<br>
+                        {% endif %}
+                        {% if applicant.ads_file %}
+                        <span>
+                          File: <a class="apply-btn" href="{{ applicant.ads_file.url }}">View File</a>
+                        </span>
+                          {% else %}
+                          <span>
+                              File: Not added<br>
+                          </span>
+                          {% endif %}
+                          <span>Private URL: <a class="apply-btn" href="{{ applicant.url }}">{{ applicant.url }}</a></span>
+                  </div>
+                  <div class="row">
+                    <span>
+                      Summary:  {{ applicant.summary }}
+                    </span>
+                    <span>
+                      Remarks:  {{ applicant.remarks }}
+                    </span>
+                  </div>
+                  <div class="row">
+                    <div class="button" style="width: 80%; background-color: gray; margin: auto;">Status: Ads Verified</div>
+
+                 </div>
         {% elif applicant.is_worked %}
-          {% if applicant.ads_file %}
-            File: <a class="button" href="{{ applicant.ads_file.url }}">View File</a><br>
-            {% else %}
-            File: Not added<br>
-            {% endif %}
-            URL: <a class="button" href="{{ applicant.url }}">{{ applicant.url }}</a><br> 
-            Summary: {{ applicant.summary }}<br> 
-          <form method="post" action="#">
+
+                  <div class="row">
+                        {% if applicant.ads_file %}
+                          {% with applicant.ads_file.url as file_url %}
+                              {% if ".jpg" in file_url or ".jpeg" in file_url or ".png" in file_url or ".gif" in file_url %}
+                                  <img src="{{ file_url }}" alt="Ad Image" style="height: 150px; width: auto;">
+                              {% elif ".mp4" in file_url or ".webm" in file_url or ".ogg" in file_url %}
+                                  <video controls style="height: 150px; width: auto;">
+                                      <source src="{{ file_url }}">
+                                      Your browser does not support the video tag.
+                                  </video>
+                              {% elif ".mp3" in file_url or ".wav" in file_url %}
+                                  <audio controls style="height: 150px; width: auto;">
+                                      <source src="{{ file_url }}">
+                                      Your browser does not support the audio tag.
+                                  </audio>
+                              {% elif ".pdf" in file_url %}
+                                  <embed src="{{ file_url }}" type="application/pdf" width="auto" height="150px" />
+                              {% else %}
+                                  File: <a class="apply-btn" href="{{ file_url }}" target="_blank">View File</a><br>
+                              {% endif %}
+                          {% endwith %}
+                        {% else %}
+                            File: Not added<br>
+                        {% endif %}
+                        {% if applicant.ads_file %}
+                        <span>
+                          File: <a class="apply-btn" href="{{ applicant.ads_file.url }}">View File</a>
+                        </span>
+                          {% else %}
+                          <span>
+                              File: Not added<br>
+                          </span>
+                          {% endif %}
+                          <span>Private URL: <a class="apply-btn" href="{{ applicant.url }}">{{ applicant.url }}</a></span>
+                  </div>
+                  <div class="row">
+                    <span>
+                      Summary:  {{ applicant.summary }}
+                    </span>
+                  </div>
+              
+          <form method="post" action="#" style="width: 100%;">
             {% csrf_token %}
             <input type="hidden" name="id" value="{{applicant.appli_id}}">
             <textarea name="remarks" id="" placeholder="Any remarks about this ads"></textarea>
-            <button class="button" type="submit">Publish Ad</button>
+            <button class="button" type="submit" style="width: 100%;">Publish Ad</button>
           </form>
         {% elif applicant.is_confirmed %}
-            <strong>Status: Wait for influencer to complete the ads</strong>
+      <div class="row">
+
+        <div class="button" style="width: 80%; background-color: gray; margin: auto;">Status: Waiting for influencer to complete the ads</div>
+      </div>
         {% else %}
-          <strong>Status: Pending</strong>
+      <div class="row">
+
+        <div class="button" style="width: 80%; background-color: gray; margin: auto;">Status: Pending</div>
+      </div>
         {% endif %}
-      </li>
+
+ 
+      </div>
+
 
     {% endfor %}
-  </ul>
+  
 {% else %}
   <p>No verified applicants yet.</p>
 {% endif %}
 
  {% endblock content%}
+

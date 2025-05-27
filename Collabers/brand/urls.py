@@ -10,5 +10,6 @@ urlpatterns = [
     path('applicants/',views.Applicants_view,name="applicants"),
     path('filter-applicants/<int:post_id>',views.ApplicantsFilter_view,name="filter_applicants"),
     path('verification/<str:filter>',views.Verification_view,name='verification'),
+    path('Payment/',views.Payment_view, name="payment"),
     path('profile',views.Profile_view,name='profile'),
 ]

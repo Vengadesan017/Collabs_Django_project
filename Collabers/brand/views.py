@@ -17,7 +17,11 @@ from .decorators import is_brand
 def Post_view(request):
     try:
         account = Account.objects.get(user=request.user)
-        posts = Post.objects.filter(brand__brand_acc=account).order_by('-post_id')
+        posts = Post.objects.filter(
+            brand__brand_acc=account
+        ).annotate(
+            applicant_count=Count('applicant_post')  # Related name in Applicant
+        ).order_by('-applicant_count', '-post_id')
         return render(request, 'brand/posts.html', {'posts': posts})
     except Exception as e:
         messages.error(request, f"Failed to load posts: {e}")
@@ -49,13 +53,30 @@ def NewPost_view(request):
     
 @login_required
 @is_brand
-def FilterPost_view(request, filter):
+def FilterPost_view(request, filter=None):
     try:
         account = Account.objects.get(user=request.user)
         if filter == "active":
-            posts = Post.objects.filter(is_open=True, brand__brand_acc=account).order_by('-post_id')
+            posts = Post.objects.filter(
+                brand__brand_acc=account,
+                is_open=True
+            ).annotate(
+                applicant_count=Count('applicant_post')  # Related name in Applicant
+            ).order_by('-applicant_count', '-post_id')
         elif filter == "in-active":
-            posts = Post.objects.filter(is_open=False, brand__brand_acc=account).order_by('-post_id')
+            posts = Post.objects.filter(
+                brand__brand_acc=account,
+                is_open=False
+            ).annotate(
+                applicant_count=Count('applicant_post')  # Related name in Applicant
+            ).order_by('-applicant_count', '-post_id')
+        else:
+            posts = Post.objects.filter(
+                brand__brand_acc=account
+            ).annotate(
+                applicant_count=Count('applicant_post')  # Related name in Applicant
+            ).order_by('-applicant_count', '-post_id')
+            # posts = Post.objects.filter(is_open=False, brand__brand_acc=account).order_by('-post_id')
         return render(request, 'brand/posts.html', {'posts': posts, 'filter': filter})
     except Exception:
         messages.error(request, f"Error filtering posts:{Exception}")
@@ -123,3 +144,16 @@ def Profile_view(request):
     # Assuming you have a way to get the current brand, e.g., via request.user
     brand = get_object_or_404(Brand, brand_acc=account  )
     return render(request, 'brand/profile.html', {'brand': brand})
+
+
+@login_required
+def Payment_view(request):
+    account = Account.objects.get(user=request.user)
+    paid_apps = Applicant.objects.filter(post__brand__brand_acc=account, is_payed=True).order_by('-is_posted','-amount')
+    unpaid_apps = Applicant.objects.filter(post__brand__brand_acc=account, is_payed=False).order_by('-is_posted','-amount')
+    brand = get_object_or_404(Brand, brand_acc=account  )
+    return render(request, 'brand/payment.html', {
+        'paid': paid_apps,
+        'unpaid': unpaid_apps,
+        'brand': brand
+    })

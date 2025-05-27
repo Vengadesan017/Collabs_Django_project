@@ -1,1 +1,5 @@
 /environment
+Collabers/media/
+# Collabers/media/*
+# !media/user_data/
+# !media/user_data/**/*

@@ -8,6 +8,15 @@
 
 {% endblock statics %}
 
+{% block page_name %}
+>
+ <div class="tab">Collabs</div> 
+ >
+ <div class="tab">Applicants</div> 
+ >
+ <div class="tab">Confirm the Influencer</div>
+{% endblock page_name %}
+
 {% block content %}
 
 
@@ -17,28 +26,42 @@
 {% if applicants %}
  <ul>
    {% for applicant in applicants %}
-     <li>
-       Influencer: {{ applicant.influencer.channel_name }}<br>
-       Post: {{ applicant.post.post_name }}<br>
-       Efficiency: {{ applicant.efficiency_prob }}<br>
-       Amount: {{ applicant.amount }}<br>
-       {% comment %} {% if applicant.ads_file %}
-       File: <a class="button" href="{{ applicant.ads_file.url }}">View File</a><br>
-       {% else %}
-       File: Not added<br>
-       {% endif %}
-       URL: <a class="button" href="{{ applicant.url }}">{{ applicant.url }}</a><br> {% endcomment %}
-
-       {% if not applicant.is_confirmed %}
-         <form method="post" action="#">
-           {% csrf_token %}
-           <input type="hidden" name="id" value="{{applicant.appli_id}}">
-           <button class="button" type="submit">Confirm This Influencer</button>
-         </form>
-       {% else %}
-         <strong>Status: Confirmed</strong>
-       {% endif %}
-     </li>
+      <div class="opportunity-card">
+        <div class="row">
+          
+          <h3>{{ applicant.influencer.channel_name }} </h3>
+          <h3>XGBoot Rank: {{ forloop.counter }}</h3>
+          {% comment %} <h3> {{ applicant.post.post_name }}</h3> {% endcomment %}
+          {% comment %} <a class="apply-btn" href="{% url "brand:filter_applicants" post_id=applicant.post.post_id %}">View {{ applicant.post.applicant_count }} Applicants</a> {% endcomment %}
+        </div>
+        <div class="row">
+          <span>Follower: {{ applicant.influencer.channel_follower }}</span>
+          <span>Avg.Like: {{ applicant.influencer.channel_avg_like }}</span>
+          <span>Avg.Comments: {{ applicant.influencer.channel_avg_comments }}</span>
+        </div>
+        <div class="row">
+         <span>Engagement Rate: {{ applicant.influencer.channel_engagement_rate|floatformat:2 }}</span>
+          <span>Efficiency: {{ applicant.efficiency_prob|floatformat:5 }}</span>
+        </div>
+        <div class="row">
+          <h3> Post title: {{ applicant.post.post_name }}</h3>
+        </div>
+        <div class="row">
+          {% if not applicant.is_confirmed %}
+            <form method="post" action="#" style="width: 100%;">
+              {% csrf_token %}
+              <input type="hidden" name="id" value="{{applicant.appli_id}}">
+              <button class="apply-btn" type="submit"  style="width: 100%;">Confirm This Influencer</button>
+            </form>
+          {% else %}
+            <form method="post" action="#" style="width: 100%;">
+              {% csrf_token %}
+ 
+              <div class="button" style="width: 100%; background-color: gray;">Status: Confirmed</div>
+            </form>
+          {% endif %}
+        </div>
+      </div>
    {% endfor %}
  </ul>
 {% else %}

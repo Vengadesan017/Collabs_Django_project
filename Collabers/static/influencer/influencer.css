@@ -88,21 +88,23 @@ a{
     }
 
     .opportunity-card h3 {
-      margin-top: 0;
+      margin: 0;
     }
 
     .apply-btn {
-      margin-top: 10px;
-      background-color: #00a8e8;
+      /* margin-top: 10px; */
+      background-color: #000000;
       color: white;
       border: none;
       padding: 10px 20px;
       border-radius: 8px;
       cursor: pointer;
+      transition: all .5s;
     }
 
     .apply-btn:hover {
-      background-color: #008cc9;
+      background-color: #d1d4d4;
+      color: #000000;
     }
 
     .button {
