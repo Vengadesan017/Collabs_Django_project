@@ -6,9 +6,11 @@ from django.contrib import messages
 from .forms import PostForm, ApplicantForm, BrandProfileForm
 from .models import Post, Brand
 from auths.models import Account
-from influencer.models import Applicant
+from influencer.models import Applicant, Influencer
 from .decorators import is_brand
 
+from django.views.decorators.http import require_POST
+from decimal import Decimal
 
 
 
@@ -157,3 +159,46 @@ def Payment_view(request):
         'unpaid': unpaid_apps,
         'brand': brand
     })
+
+@require_POST
+def handle_payment(request):
+    try:
+        brand_id = request.POST.get("brand")
+        influencer_id = request.POST.get("influencer")
+        amount = request.POST.get("amount")
+        appli_id = request.POST.get("appli_id")
+
+        try:
+            amount = Decimal(amount)
+            print(amount)
+        except (TypeError, ValueError):
+            messages.error(request, "Invalid amount.")
+            return redirect("brand:payment")
+
+        brand = get_object_or_404(Brand, brand_id=brand_id)
+        influencer = get_object_or_404(Influencer, influ_id=influencer_id)
+        applicant = get_object_or_404(Applicant, appli_id=appli_id)
+
+        print(brand)
+        print(applicant)
+        print(influencer)
+        if brand.wallet is None or brand.wallet < amount:
+            messages.error(request, "Insufficient funds in your wallet.")
+            return redirect("brand:payment")
+
+        # Proceed with the payment
+        brand.wallet -= amount
+        influencer.wallet = (influencer.wallet or 0) + amount
+        applicant.is_payed = True
+
+        # Save all changes
+        brand.save()
+        influencer.save()
+        applicant.save()
+
+        messages.success(request, "Payment successful.")
+        return redirect("brand:payment")
+    
+    except Exception as e:
+        messages.error(request, f"Error :{e}")
+        return redirect("brand:payment")

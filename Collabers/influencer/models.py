@@ -28,13 +28,27 @@ NICHE_CHOICES = [
 class Influencer(models.Model):
     influ_id = models.AutoField(primary_key=True)
     influ_acc = models.OneToOneField(Account, on_delete=models.CASCADE)
-    channel_name = models.CharField(max_length=225)
-    channel_id = models.BigIntegerField(max_length=20)
+
+        # Basic channel info
+    channel_name = models.CharField(max_length=225)  # from API: snippet.title
+    channel_id = models.CharField(max_length=255, unique=True)  # API channel ID (was BigInteger, now CharField)
     channel_niche = models.CharField(max_length=50, choices=NICHE_CHOICES)
-    channel_follower = models.BigIntegerField(max_length=225,blank=True, null=True)
-    channel_engagement_rate = models.DecimalField(max_digits=20, decimal_places=10,blank=True, null=True)
-    channel_avg_like = models.BigIntegerField(max_length=225,blank=True, null=True)
-    channel_avg_comments = models.BigIntegerField(max_length=225,blank=True, null=True)
+
+    # Auto-populated from YouTube API
+    channel_description = models.TextField(blank=True, null=True)  # snippet.description
+    channel_created_at = models.DateTimeField(blank=True, null=True)  # snippet.publishedAt
+    channel_thumbnail_url = models.URLField(blank=True, null=True)  # snippet.thumbnails.default.url
+
+    # Stats from YouTube
+    channel_follower = models.BigIntegerField(blank=True, null=True)  # statistics.subscriberCount
+    channel_total_views = models.BigIntegerField(blank=True, null=True)  # statistics.viewCount
+    channel_video_count = models.BigIntegerField(blank=True, null=True)  # statistics.videoCount
+
+    # Engagement metrics (your custom logic)
+    channel_engagement_rate = models.DecimalField(max_digits=20, decimal_places=10, blank=True, null=True)
+    channel_avg_like = models.BigIntegerField(blank=True, null=True)
+    channel_avg_comments = models.BigIntegerField(blank=True, null=True)
+    
     wallet = models.IntegerField(default=0,blank=True,null=True)
     
     def __str__(self):

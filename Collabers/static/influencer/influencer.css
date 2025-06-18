@@ -12,11 +12,13 @@ body {
     /* Sidebar */
     .sidebar {
       width: 220px;
+      height: 100%;
       background-color: white;
       border-right: 1px solid #ddd;
       display: flex;
       flex-direction: column;
       padding-top: 20px;
+      position: fixed;
     }
 
     .sidebar h2 {
@@ -47,6 +49,7 @@ a{
     .main {
       flex: 1;
       padding: 20px;
+      margin-left: 220px;
     }
 
     .topbar {

@@ -1,21 +1,19 @@
-{% extends "brand/layout.html" %}
+{% extends 'brand/layout.html' %}
+{% load static %}
 
 {% block title %}
-
-{% endblock title %}
-{% load static %}
+  Profile
+{% endblock %}
 {% block statics %}
 
-{% endblock statics %}
+{% endblock %}
 {% block page_name %}
->
- <div class="tab">Profile</div> 
-
-{% endblock page_name %}
-{% block content %}<!-- templates/brand/profile.html -->
-<h2>Brand Profile</h2>
-<p>Name: {{ brand.brand_name }}</p>
-<p>Niche: {{ brand.get_brand_niche_display }}</p>
-<p>Wallet Balance: ₹{{ brand.wallet }}</p>
-
-{% endblock content%}
+  <div class="tab">Profile</div>
+{% endblock %}
+{% block content %}
+  <!-- templates/brand/profile.html -->
+  <h2>Brand Profile</h2>
+  <p>Name: {{ brand.brand_name }}</p>
+  <p>Niche: {{ brand.get_brand_niche_display }}</p>
+  <p>Wallet Balance: ₹{{ brand.wallet }}</p>
+{% endblock %}

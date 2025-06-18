@@ -1,44 +1,39 @@
-{% extends "brand/layout.html" %}
+{% extends 'brand/layout.html' %}
 
 {% block title %}
-
-{% endblock title %}
+  Create new post
+{% endblock %}
 {% load static %}
 {% block statics %}
 
-{% endblock statics %}
+{% endblock %}
 
 {% block page_name %}
->
- <div class="tab">New Post</div> 
-
-{% endblock page_name %}
+  ><div class="tab">New Post</div>
+{% endblock %}
 
 {% block content %}
+  <!-- templates/brand/new_post.html -->
+  <h2>Create New Post</h2>
 
-
-
-
-<!-- templates/brand/new_post.html -->
-<h2>Create New Post</h2>
-
-
-
-
-<form method="post">
-  {% csrf_token %}
-          <div class="form-group">
-                      <label for="brand-name">Ads Title</label>
-  {{ form.post_name }}</div>
-          <div class="form-group">
-                      <label for="ad-details">Ads details</label>
-  {{ form.detail }}</div>
-          <div class="form-group">
-                      <label for="budget">Budget for each influencer</label>
-  {{ form.budget }}</div>
-          <div class="form-group">
-          <label for="collabs">No. of collabs</label>
-  {{ form.max_influencer }}</div>
-  <button class="submit-btn" type="submit">Create Post</button>
-</form>
- {% endblock content%}
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="brand-name">Ads Title</label>
+      {{ form.post_name }}
+    </div>
+    <div class="form-group">
+      <label for="ad-details">Ads details</label>
+      {{ form.detail }}
+    </div>
+    <div class="form-group">
+      <label for="budget">Budget for each influencer</label>
+      {{ form.budget }}
+    </div>
+    <div class="form-group">
+      <label for="collabs">No. of collabs</label>
+      {{ form.max_influencer }}
+    </div>
+    <button class="submit-btn" type="submit">Create Post</button>
+  </form>
+{% endblock %}

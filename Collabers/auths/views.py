@@ -84,3 +84,160 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('auth:login')  # Or your preferred redirect
+
+
+def home_view(request):
+    return render(request,'auth/index.html')
+
+
+
+def get_id(request):
+    name = False
+    if request.method == 'POST':
+        name = request.POST['name']
+        id = get_channel_id_from_handle(name)
+        fetch_and_store_channel_data_print(id)
+        
+    return render(request,'auth/id.html',{'id':id})
+
+
+
+# Get data from APi 
+
+def get_channel_id_from_handle(handle):
+    if handle.startswith("@"):
+        handle = handle[1:]  # remove @
+
+    url = f"https://www.googleapis.com/youtube/v3/channels?part=id&forHandle={handle}&key={settings.YOUTUBE_API_KEY}"
+
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+
+        if "items" in data and len(data["items"]) > 0:
+            return data["items"][0]["id"]
+        else:
+            print(f"No channel found for handle: @{handle}")
+            return None
+
+    except Exception as e:
+        print(f"[ERROR] Could not get channel ID from handle: {e}")
+        return None
+
+
+
+
+
+#  Auto fetch
+import requests
+from django.conf import settings
+from influencer.models import Influencer
+from datetime import datetime
+
+def fetch_and_store_channel_data(channel_id, influencer=None):
+    """
+    Fetch YouTube channel data and update the Influencer instance.
+    """
+    url = (
+        "https://www.googleapis.com/youtube/v3/channels"
+        f"?part=snippet,statistics&id={channel_id}&key={settings.YOUTUBE_API_KEY}"
+    )
+
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        if "items" not in data or not data["items"]:
+            print(f"No data found for channel ID: {channel_id}")
+            return
+
+        info = data["items"][0]
+        snippet = info.get("snippet", {})
+        stats = info.get("statistics", {})
+        # print(data)
+        # Safely parse and update
+        influencer.channel_name = snippet.get("title", influencer.channel_name)
+        influencer.channel_id = channel_id
+        influencer.channel_description = snippet.get("description", "")
+
+        published_at = snippet.get("publishedAt")
+        if published_at:
+            influencer.channel_created_at = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ")
+
+        influencer.channel_thumbnail_url = (
+            snippet.get("thumbnails", {}).get("default", {}).get("url", "")
+        )
+
+        influencer.channel_follower = int(stats.get("subscriberCount", 0))
+        influencer.channel_total_views = int(stats.get("viewCount", 0))
+        influencer.channel_video_count = int(stats.get("videoCount", 0))
+
+        influencer.save()
+
+        print(f"YouTube channel data stored for: {channel_id}")
+
+    except requests.RequestException as e:
+        print(f"[ERROR] YouTube API fetch failed: {e}")
+    except Exception as e:
+        print(f"[ERROR] Unexpected error: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+def fetch_and_store_channel_data_print(channel_id, influencer=None):
+    """
+    Fetch YouTube channel data and update the Influencer instance.
+    """
+    url = (
+        "https://www.googleapis.com/youtube/v3/channels"
+        f"?part=snippet,statistics&id={channel_id}&key={settings.YOUTUBE_API_KEY}"
+    )
+
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        
+        if "items" not in data or not data["items"]:
+            print(f"No data found for channel ID: {channel_id}")
+            return
+
+        info = data["items"][0]
+        snippet = info.get("snippet", {})
+        stats = info.get("statistics", {})
+        print(data)
+        # # Safely parse and update
+        # influencer.channel_name = snippet.get("title", influencer.channel_name)
+        # influencer.channel_id = channel_id
+        # influencer.channel_description = snippet.get("description", "")
+
+        # published_at = snippet.get("publishedAt")
+        # if published_at:
+        #     influencer.channel_created_at = datetime.strptime(published_at, "%Y-%m-%dT%H:%M:%SZ")
+
+        # influencer.channel_thumbnail_url = (
+        #     snippet.get("thumbnails", {}).get("default", {}).get("url", "")
+        # )
+
+        # influencer.channel_follower = int(stats.get("subscriberCount", 0))
+        # influencer.channel_total_views = int(stats.get("viewCount", 0))
+        # influencer.channel_video_count = int(stats.get("videoCount", 0))
+
+        # influencer.save()
+
+        print(f"YouTube channel data stored for: {channel_id}")
+
+    except requests.RequestException as e:
+        print(f"[ERROR] YouTube API fetch failed: {e}")
+    except Exception as e:
+        print(f"[ERROR] Unexpected error: {e}")

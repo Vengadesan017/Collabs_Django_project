@@ -152,3 +152,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'auth:login'
 
+
+YOUTUBE_API_KEY = "AIzaSyD2BazAbDMiVeHh7MM6Ge7d9bVFnp0Fag4"

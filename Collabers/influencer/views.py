@@ -7,6 +7,7 @@ from .models import Influencer, Applicant
 from .forms import ApplicantForm
 from auths.models import Account
 from django.db.models import Q
+from django.db.models import Count, Subquery, OuterRef
 
 # Create your views here.
 from .predictor.utils import predict_efficiency
@@ -52,9 +53,14 @@ def Collabs_view(request):
     else:
         applied_post_ids = Applicant.objects.filter(influencer=influencer).values_list('post_id', flat=True)
         
+# Filter available posts and annotate with applied influencer count
         available_posts = Post.objects.filter(
             is_open=True
-        ).exclude(post_id__in=applied_post_ids).order_by('-post_id')
+        ).exclude(
+            post_id__in=applied_post_ids
+        ).annotate(
+            total_applied_influencers=Count('applicant_post')  # use reverse relation: modelname_set (by default)
+        ).order_by('-post_id')
 
         return render(request, 'influencer/collabs.html', {'posts': available_posts})
 

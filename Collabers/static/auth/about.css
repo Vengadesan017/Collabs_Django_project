@@ -1,0 +1,38 @@
+@import url('index.css');
+.about {
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100vh;;
+  color: #ffffff;
+}
+
+.container2 {
+  width:30%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding:25px;
+  position: relative;
+  left: 30%;
+} 
+
+.about h2{
+  color: #ffffff;
+  margin-bottom: 50px;
+  font-size: 48px;
+  font-weight: 600;
+}
+
+
+
+.container1 img{
+  width:450px;
+  height: 400px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow: 20px 20px 20px rgba(119, 179, 116, 0.1);
+  position: relative;
+  left: 25%;
+}
+

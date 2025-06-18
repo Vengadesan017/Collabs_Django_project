@@ -1,0 +1,47 @@
+@import url('index.css');
+
+.text{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 270px;
+    left: 130px;
+    background: linear-gradient(to top,  #fff, #000); /* your gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 48px;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.image{  
+    position:absolute;
+    top: 25%;
+    right: 10%;
+    height: 400px;
+    border-radius: 30px;
+}
+
+.button{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 270px;
+    left: 130px;
+    background-color: #000000;
+    color: #fff;
+    padding: 12px 10px;
+    width: 140px;
+    border-radius: 10px;
+    box-shadow: #9999 1px 1px 5px;
+    border: none;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.button:hover{
+    background-color: #fff;
+    color: #000;
+    transition: 0.3s;
+    
+}

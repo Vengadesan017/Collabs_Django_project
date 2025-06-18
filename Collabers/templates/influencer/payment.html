@@ -1,51 +1,105 @@
-    {% extends "influencer/layout.html" %}
+{% extends 'influencer/layout.html' %}
 
 {% block title %}
-
-{% endblock title %}
+  Payment
+{% endblock %}
 {% load static %}
 {% block statics %}
 
-{% endblock statics %}
-
+{% endblock %}
+{% block page_name %}
+>
+  <div class="tab">Payment</div>
+{% endblock %}
 {% block content %}
+  <h1>Payment Summary</h1>
 
+  <h2>Paid Applications</h2>
+  <table border="1">
+    <tr>
+      <th>Post</th>
+      <th>Brand</th>
+      <th>Amount</th>
+      <th>Confirmed</th>
+      <th>Enquiry</th>
+    </tr>
+    {% for app in paid %}
+      <tr>
+        <td>{{ app.post.post_name }}</td>
+        <td>{{ app.post.brand }}</td>
+        <td>
+          {% if app.amount %}
+            {{ app.amount }}
+          {% else %}
+            Free of cost
+          {% endif %}
+        </td>
+        <td>
+          {% if app.is_confirmed %}
+            ✅
+          {% else %}
+            ❌
+          {% endif %}
+        </td>
+        <td>
+          <a href="mailto:support@example.com?subject=Enquiry%20about%20{{ app.post.post_name }}&body=Dear%20Team,%0A%0AI%20would%20like%20to%20raise%20an%20enquiry%20regarding%20the%20following%20post:%0A%0APost:%20{{ app.post.post_name }}%0AAmount:%20{% if app.amount %}
+              {{ app.amount }}
+            {% else %}
+              
+              Free of cost
 
-    <h1>Payment Summary</h1>
+            {% endif %}%0AConfirmed:%20{% if app.is_confirmed %}
+              
+              Yes
 
-    <h2>Paid Applications</h2>
-    <table border="1">
-        <tr>
-            <th>Post</th>
-            <th>Amount</th>
-            <th>Confirmed</th>
-        </tr>
-        {% for app in paid %}
-        <tr>
-            <td>{{ app.post.post_name }}</td>
-            <td>{{ app.amount }}</td>
-            <td>{{ app.is_confirmed }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="3">No paid applications.</td></tr>
-        {% endfor %}
-    </table>
+            {% else %}
+              
+              No
 
-    <h2>Unpaid Applications</h2>
-    <table border="1">
-        <tr>
-            <th>Post</th>
-            <th>Amount</th>
-            <th>Confirmed</th>
-        </tr>
-        {% for app in unpaid %}
-        <tr>
-            <td>{{ app.post.post_name }}</td>
-            <td>{{ app.amount }}</td>
-            <td>{{ app.is_confirmed }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="3">No unpaid applications.</td></tr>
-        {% endfor %}
-    </table>
-{% endblock content %}
+            {% endif %}"
+            class="">
+            📩 Enquire
+          </a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="4">No paid applications.</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Unpaid Applications</h2>
+  <table border="1">
+    <tr>
+      <th>Post</th>
+      <th>Company</th>
+      <th>Amount</th>
+      <th>Confirmed</th>
+    </tr>
+    {% for app in unpaid %}
+      <tr>
+        <td>{{ app.post.post_name }}</td>
+        <td>{{ app.post.brand }}</td>
+        <td>
+          {% if app.amount %}
+            {{ app.amount }}
+          {% else %}
+            Free of cost
+          {% endif %}
+        </td>
+        <td>
+          {% if app.is_confirmed %}
+            ✅
+          {% else %}
+            ❌
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="3">No unpaid applications.</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

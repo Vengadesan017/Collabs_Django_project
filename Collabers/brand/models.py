@@ -34,7 +34,7 @@ class Brand(models.Model):
     wallet = models.IntegerField(default=0,blank=True,null=True)
     
     def __str__(self):
-        return self.brand_name
+        return f"{self.brand_name} - {self.get_brand_niche_display()}"
     
     
 class Post(models.Model):
@@ -45,6 +45,7 @@ class Post(models.Model):
     budget = models.IntegerField(max_length=10)
     max_influencer = models.IntegerField()
     is_open = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return f"{self.post_name} - {self.brand}"

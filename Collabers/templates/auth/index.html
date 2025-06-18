@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COLLABERS</title>
+    <link rel="stylesheet"  href="{% static 'auth/nav.css' %}">
+    <link rel="stylesheet"  href="{% static 'auth/body.css' %}">
+    <link rel="stylesheet"  href="{% static 'auth/index.css' %}">
+    <link rel="stylesheet"  href="{% static 'auth/about.css' %}">
+    <link rel="stylesheet"  href="{% static 'auth/works.css' %}">
+    <link rel="stylesheet"  href="{% static 'auth/features.css' %}">
+
+</head>
+<body>
+   
+   <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="#home"><p2>C</p2>OLLABERS</a></li>
+      <li><a href="#home">HOME</a></li>
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#features">FEATURES</a></li>
+      <li><a href="#works">WORKS</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+    </ul>
+  </nav>
+  <section class="home" id="home">
+  <div class="text">
+    A SMART PLATFORM FOR <span>INFLUENCER–BRAND</span><span>COLLABORATION</span>
+    </div>
+    <a href="{% url "auth:login" %}" class="button">Explore now</a>
+  
+  <img src="{% static 'img/sam1.jpeg' %}" alt="Image 1" class="image">  
+</section>
+  <section class="about" id="about">
+    <div class="container1">
+      <img src="{% static 'img/50427.jpg' %}" alt="Image 2" class="about-image">>
+    </div>
+    <div class="container2">
+      <h2>ABOUT</h2><br>
+      <span><p>Collabers is a smart web platform designed to seamlessly connect brands with the right influencers for marketing collaborations.
+It simplifies the discovery, application, and selection process using an intuitive UI and data-driven filtering.
+Built with modern technology and machine learning, Collabers makes influencer marketing smarter and faster.</p></span>
+</div>
+    </section>
+   
+    
+     <section class="features" id="features">
+    <h2> FEATURES </h2>
+    <div class="feature-grid">
+    <div class="feature-card">
+      <h3>AI-Powered Influencer Sorting</h3>
+      <p>Uses an XGBoost machine learning model to rank influencers based on engagement rate, follower count, and niche relevance.</p>
+      <p>Helps brands quickly identify high-potential influencers without manual screening.</p>
+      <p>Makes the selection process data-driven and efficient, reducing guesswork and bias.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Role-Based Dashboards</h3>
+      <p>Provides a personalized experience based on whether the user is a brand or an influencer.</p>
+      <p>Influencers see campaign listings, application statuses, and profile metrics.</p>
+      <p>Brands get tools to create, track, and manage campaigns, along with influencer applications.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Campaign Discovery & Management</h3>
+      <p>Influencers can search and filter campaigns based on category, budget, and deadline.</p>
+      <p>Brands can create and publish campaigns with detailed requirements and goals.</p>
+      <p>Both roles can track applications, view status updates, and manage ongoing collaborations from their dashboard.</p>
+    </div>
+  </div>
+  </section>
+  <section class="hireme" id="works">
+    <h2>HOW ITS WORKS</h2>
+    <p1>Our 5-Step Smart Matching Process :</p1>
+    <div class="steps-container">
+    <div class="step">
+      <h3>Sign Up & Choose Your Role :</h3>
+     <p> Users register as either an Influencer or a Brand. Each role gets a unique dashboard tailored to their needs.</p>
+    </div>
+    <div class="step">
+      <h3>Brands Post Campaigns :</h3>
+      <p>Brands create collaboration opportunities by setting campaign details like category, deliverables, budget, and deadline.</p>
+    </div>
+    <div class="step">
+      <h3>Influencers Discover & Apply :</h3>
+      <p>Influencers browse available campaigns, filter by niche, and apply by submitting a pitch with their profile data.</p>
+    </div>
+    <div class="step">
+      <h3>Smart Application Review :</h3>
+      <p>The system uses a machine learning model (XGBoost) to rank influencer applications based on engagement rate, relevance, and other metrics.</p>
+    </div>
+    <div class="step">
+      <h3>Brands Shortlist & Collaborate :</h3>
+      <p>Brands review ranked applications and shortlist the best candidates to proceed with collaboration outside or within the platform.</p>
+    </div>
+  </div>
+  </section>
+  <footer >
+    <div class="logo" >
+      <h5><a href="#home">BACK TO TOP</a></h5>
+    </div>
+
+    <p>&copy;COLLABERS. All rights reserved.</p>
+  </footer>
+
+  <script src="{% static 'auth/scripts.js' %}"></script>
+
+</body>
+
+</html>

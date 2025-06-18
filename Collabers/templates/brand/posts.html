@@ -1,68 +1,50 @@
-{% extends "brand/layout.html" %}
+{% extends 'brand/layout.html' %}
 
 {% block title %}
-
-{% endblock title %}
+  My posts
+{% endblock %}
 {% load static %}
 {% block statics %}
 
-{% endblock statics %}
+{% endblock %}
 
 {% block page_name %}
->
- <div class="tab">Collabs</div> 
- >
- <div class="tab">View Your ad posts</div>
-{% endblock page_name %}
+  ><div class="tab">Collabs</div>><div class="tab">View Your ad posts</div>
+{% endblock %}
 
 {% block content %}
-
-
-
-
-<!-- templates/brand/posts.html -->
- <a class="button" href="{% url "brand:new_post" %}">New post</a>
- <a class="button" href="{% url "brand:filter_post" filter='active' %}">Active post</a>
- <a class="button" href="{% url "brand:filter_post" filter='in-active' %}">Inactive post</a>
- <a class="button" href="{% url "brand:post" %}">All post</a>
-<h2>Your Posts</h2>
-{% if posts %}
-  <ul>
-    {% for post in posts %}
-
-      <div class="opportunity-card">
-        <div class="row">
-          
-          <h3>{{ post.post_name }}</h3>
-          <a class="apply-btn" href="{% url "brand:filter_applicants" post_id=post.post_id %}">View {{ post.applicant_count }} Applicants</a>
-        </div>
-        <div class="row">
-          <p>{{ post.detail }}</p>
-        </div>
-        <div class="row">
-          <span>        
-            Budget: &#8377 {{ post.budget }}
-          </span>
-          <span>
-            Max Influencers: {{ post.max_influencer }}
-          </span>
-          <span>
-            Status: 
-            {% if post.is_open %}
-              Active
+  <!-- templates/brand/posts.html -->
+  <a class="button" href="{% url 'brand:new_post' %}">New post</a>
+  <a class="button" href="{% url 'brand:filter_post' filter='active' %}">Active post</a>
+  <a class="button" href="{% url 'brand:filter_post' filter='in-active' %}">Inactive post</a>
+  <a class="button" href="{% url 'brand:post' %}">All post</a>
+  <h2>Your Posts</h2>
+  {% if posts %}
+    <ul>
+      {% for post in posts %}
+        <div class="opportunity-card">
+          <div class="row">
+            <h3>{{ post.post_name }}</h3>
+            <a class="apply-btn" href="{% url 'brand:filter_applicants' post_id=post.post_id %}">View {{ post.applicant_count }} Applicants</a>
+          </div>
+          <div class="row">
+            <p>{{ post.detail }}</p>
+          </div>
+          <div class="row">
+            <span>Budget: &#8377{{ post.budget }}</span>
+            <span>Max Influencers: {{ post.max_influencer }}</span>
+            <span>
+              Status:{% if post.is_open %}
+                Active
               {% else %}
-              Inactive
-            {% endif %}
-          </span>
+                Inactive
+              {% endif %}
+            </span>
+          </div>
         </div>
-      </div>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No posts found.</p>
-{% endif %}
- {% endblock content%}
-
-
-
- 
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No posts found.</p>
+  {% endif %}
+{% endblock %}

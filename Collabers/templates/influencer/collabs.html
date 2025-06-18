@@ -1,43 +1,47 @@
-  {% extends "influencer/layout.html" %}
+{% extends 'influencer/layout.html' %}
 
 {% block title %}
-
-{% endblock title %}
+  Recommended ads
+{% endblock %}
 {% load static %}
 {% block statics %}
 
-{% endblock statics %}
-
+{% endblock %}
+{% block page_name %}
+>
+  <div class="tab">Recommended ad campaigns</div>
+{% endblock %}
 {% block content %}
-
-
   <h1>Available Collabs</h1>
-    <table border="1">
-        <tr>
-            <th>Post Name</th>
-            <th>Detail</th>
-            <th>Budget</th>
-            <th>Max Influencers</th>
-            <th>Action</th>
-        </tr>
-        {% for post in posts %}
-        <tr>
-            <td>{{ post.post_name }}</td>
-            <td>{{ post.detail }}</td>
-            <td>{{ post.budget }}</td>
-            <td>{{ post.max_influencer }}</td>
-            <td>
-                <form method="post" action="#">
-                    {% csrf_token %}
-                    <input type="hidden" name="id" value="{{post.post_id}}">
-                    <button class="button" type="submit">Apply</button>
-                </form>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No available collabs at the moment.</td>
-        </tr>
-        {% endfor %}
-    </table>
-{% endblock content %}
+
+  {% for post in posts %}
+    <div class="opportunity-card">
+      <div class="row">
+        <h3>{{ post.post_name }}</h3>
+        <h3>Company Name: {{ post.brand.brand_name }}</h3>
+        {% comment %} <h3>{{ applicant.post.post_name }}</h3> {% endcomment %}
+        {% comment %} <a class="apply-btn" href="{% url 'brand:filter_applicants' post_id=applicant.post.post_id %}">View {{ applicant.post.applicant_count }} Applicants</a> {% endcomment %}
+      </div>
+      <div class="row">
+        <span>Detail: {{ post.detail }}</span>
+      </div>
+      <div class="row">
+        <span>Budget: {{ post.budget }}</span>
+        <span>Max Influencer: {{ post.max_influencer }}</span>
+
+        <span>Applied Influencer: {{ post.total_applied_influencers }}</span>
+
+        <span>Posted : {{ post.created_at|timesince }} ago</span>
+      </div>
+      <div class="row">
+        <form method="post" action="#">
+          {% csrf_token %}
+          <input type="hidden" name="id" value="{{ post.post_id }}" />
+          <button class="button" style="width: 100%;" type="submit">Apply</button>
+        </form>
+      </div>
+    </div>
+  {% empty %}
+    No available collabs at the moment.
+  {% endfor %}
+{% endblock %}

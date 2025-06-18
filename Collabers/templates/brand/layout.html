@@ -1,13 +1,14 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      {% block title %}
-
-      <title>Collabers</title>
-      {% endblock %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        {% block title %}
+        
+        {% endblock %}
+      </title>
     <link rel="stylesheet" href="{% static 'influencer/influencer.css' %}" />
     <link rel="stylesheet" href="{% static 'brand/brand.css' %}" />
     <link rel="stylesheet" href="{% static 'influencer/error.css' %}" />
@@ -15,66 +16,61 @@
 
     {% endblock %}
     <script src="{% static 'js/recruiters/nav.js' %}" defer></script>
-  <link rel="stylesheet" href="influencer.css">
-    <style>
-
-
-    </style>  
-</head>
-<body>
-  <div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h2>Collabers</h2>
-      <a href="{% url 'brand:post' %}">Collabs</a>
-      {% comment %} <a href="{% url 'brand:filter_post' filter='all' %}">Status</a> {% endcomment %}
-      {% comment %} <a href="{% url 'brand:applicants' %}">Status</a> {% endcomment %}
-      {% comment %} <a href="{% url 'influencer:filter_applicants' post_id=''%}">Payment</a> {% endcomment %}
-      <a href="{% url 'brand:verification' filter='all' %}">Status</a>
-      <a href="{% url 'brand:payment' %}">Payment</a>
-      <a href="{% url 'brand:profile' %}">Profile</a>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main">
-      <div class="topbar">
-        <div class="tab">Brand</div>
-        {% block page_name %}
-        
-        {% endblock page_name %}
-        <div class="search-bar">
-          <input type="text" placeholder="Search" />
-        </div>
+    <link rel="stylesheet" href="influencer.css" />
+    <style></style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <h2>Collabers</h2>
+        <a href="{% url 'brand:post' %}">Collabs</a>
+        {% comment %} <a href="{% url 'brand:filter_post' filter='all' %}">Status</a> {% endcomment %}
+        {% comment %} <a href="{% url 'brand:applicants' %}">Status</a> {% endcomment %}
+        {% comment %} <a href="{% url 'influencer:filter_applicants' post_id='' %}">Payment</a> {% endcomment %}
+        <a href="{% url 'brand:verification' filter='all' %}">Status</a>
+        <a href="{% url 'brand:payment' %}">Payment</a>
+        <a href="{% url 'brand:profile' %}">Profile</a>
       </div>
+
+      <!-- Main Content -->
+      <div class="main">
+        <div class="topbar">
+          <div class="tab">Brand</div>
+          {% block page_name %}
+
+          {% endblock %}
+          <div class="search-bar">
+            <input type="text" placeholder="Search" />
+          </div>
+        </div>
 
         {% if messages %}
           <div class="message-container">
             {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-              </div>
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
             {% endfor %}
           </div>
         {% endif %}
 
-                {% block content %}
+        {% block content %}
 
-                {% endblock %}
-      {% comment %} <!-- Opportunity Cards -->
-      <div class="opportunity-card">
-        <h3>Brand Name</h3>
-        <p>About the ad</p>
-        <button class="apply-btn">Apply</button>
+        {% endblock %}
+        {% comment %} <!-- Opportunity Cards -->
+        <div class="opportunity-card">
+          <h3>Brand Name</h3>
+          <p>About the ad</p>
+          <button class="apply-btn">Apply</button>
+        </div>
+
+        <div class="opportunity-card">
+          <h3>Brand Name</h3>
+          <p>About the ad</p>
+          <button class="apply-btn">Apply</button>
+        </div>
       </div>
 
-      <div class="opportunity-card">
-        <h3>Brand Name</h3>
-        <p>About the ad</p>
-        <button class="apply-btn">Apply</button>
-      </div>
-    </div>
-    
-          <form>
+      <form>
         <div class="form-group">
           <label for="brand-name">Brand Name</label>
           <input type="text" id="brand-name" name="brand-name" required />
@@ -97,10 +93,8 @@
 
         <button type="submit" class="submit-btn">Proceed for payment to post</button>
       </form>
-    
-    {% endcomment %}
 
-
-  </div>
-</body>
+      {% endcomment %}
+    </div>
+  </body>
 </html>

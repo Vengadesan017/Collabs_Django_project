@@ -1,0 +1,44 @@
+@import url('index.css');
+
+.navbar {
+  width: 100%;
+  height:100px;
+  position:fixed;
+  padding: 40px;
+  border-bottom: #000 2px solid;
+  z-index:1;
+  background-color: #F5F7F8;
+}
+
+.navbar ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-decoration: none;
+
+}
+
+.navbar ul li{
+  list-style: none;
+}
+
+.navbar ul li a{
+  text-decoration: none;
+  color: #000000;
+  font-size: 22px;
+}
+
+.navbar ul li a:hover{
+  color: #999;
+  transition: 0.3s;
+}
+
+p2{
+ font-size: 40px;
+background: linear-gradient(to bottom,  #fff, #555, #000); /* your gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+ position: absolute;
+ left: 5.6%;
+ top: 25px;
+}

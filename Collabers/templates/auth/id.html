@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Collabers</title>
+  <link rel="stylesheet"  href="{% static 'auth/login.css' %}">
+    <link rel="stylesheet" href="{% static 'influencer/error.css' %}" />
+</head>
+<body>
+
+  {% if messages %}
+  {% for message in messages %}
+  <div class='alert alert-{{ message.tags }}'>
+    <span class="closebtn">&times;</span>
+    {{ message }}
+  </div>    
+  {% endfor %}
+  {% endif %}
+
+  <div class="login-box">
+    <h2>COLLABERS</h2>
+    <p>Get ID from channel name</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Channel name</label>
+        <input type="text" name="name" placeholder="@a2dchannel" />
+      </div>
+        {% if id %}
+      <div class="form-group">
+        <label>Channel Id is</label>
+        <input type="text" name="id" value="{{id}}" placeholder="@a2dchannel" />
+      </div>
+        {% endif %}
+
+      <button class="btn" type="submit">Get ID</button>
+
+    </form>
+  </div>
+</body>
+</html>

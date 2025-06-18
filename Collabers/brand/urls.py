@@ -12,4 +12,6 @@ urlpatterns = [
     path('verification/<str:filter>',views.Verification_view,name='verification'),
     path('Payment/',views.Payment_view, name="payment"),
     path('profile',views.Profile_view,name='profile'),
+    
+        path('make-payment/', views.handle_payment, name='handle_payment'),
 ]

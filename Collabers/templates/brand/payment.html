@@ -1,77 +1,117 @@
-    {% extends "brand/layout.html" %}
+{% extends 'brand/layout.html' %}
 
 {% block title %}
-
-{% endblock title %}
+  Payments
+{% endblock %}
 {% load static %}
 {% block statics %}
 
-{% endblock statics %}
+{% endblock %}
 {% block page_name %}
->
- <div class="tab">Payment</div> 
- >
- <div class="tab">View Your wallet and payment histroy</div>
-{% endblock page_name %}
+  ><div class="tab">Payment</div>><div class="tab">View Your wallet and payment histroy</div>
+{% endblock %}
 {% block content %}
-
-
-    <h1>Payment Summary</h1>
-<h3>Wallet Balance :  &#8377 {{ brand.wallet }}</h3>
-    <h2>Paid Applications</h2>
-    <table border="1">
+  <h1>Payment Summary</h1>
+  <h3>Wallet Balance : &#8377 {{ brand.wallet }}</h3>
+  <h2>Paid Applications</h2>
+  <table border="1">
+    <tr>
+      <th>Post</th>
+      <th>Influencer</th>
+      <th>Amount</th>
+      <th>Ad Done</th>
+      <th>Enquiry</th>
+    </tr>
+    {% if paid %}
+      {% for app in paid %}
         <tr>
-            <th>Post</th>
-            <th>Amount</th>
-            <th>Ad done</th>
-            <th>Enquiry</th>
+          <td>{{ app.post.post_name }}</td>
+          <td>{{ app.influencer.channel_name  }} - {{ app.influencer.get_channel_niche_display  }}</td>
+          <td>
+            {% if app.amount %}
+              {{ app.amount }}
+            {% else %}
+              Free of cost
+            {% endif %}
+          </td>
+          <td>
+            {% if app.is_posted %}
+              ✅ Yes
+            {% else %}
+              ❌ No
+            {% endif %}
+          </td>
+          <td>
+            <a href="mailto:support@example.com?subject=Enquiry%20about%20{{ app.post.post_name }}&body=Hello,%0AI%20have%20a%20question%20about%20{{ app.post.post_name }}.%0AAmount:%20{% if app.amount %}
+                {{ app.amount }}
+              {% else %}
+                Free of cost
+              {% endif %}"
+              class="">
+              📩 Raise Enquiry
+            </a>
+          </td>
         </tr>
-        {% if paid %}
-        
-        {% for app in paid %}
-        <tr>    
-            <td></td>
-            <td>{{ app.post.post_name }}</td>
-            <td>{{ app.amount }}</td>
-            <td>{{ app.is_confirmed }}</td>
+      {% empty %}
+        <tr>
+          <td colspan="4">No paid applications.</td>
         </tr>
-        {% empty %}
-        <tr><td colspan="4">No paid applications.</td></tr>
-        {% endfor %}
-        {% else %}
-        <tr><td colspan="4">No paid applications.</td></tr>
-        {% endif %}
-    </table>
+      {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="4">No paid applications.</td>
+      </tr>
+    {% endif %}
+  </table>
 
-     <h2>Unpaid Applications</h2>
-    <table border="1">
+  <h2>Pending Applications</h2>
+  <table border="1">
+    <tr>
+      <th>Post</th>
+      <th>Influencer</th>
+      <th>Amount</th>
+      <th>Ad Done</th>
+      <th>Process Payment</th>
+    </tr>
+    {% if unpaid %}
+      {% for app in unpaid %}
         <tr>
-            <th>Post</th>
-            <th>Amount</th>
-            <th>Ad Done</th>
-            <th>Process payment</th>
+          <td>{{ app.post.post_name }}</td>
+          <td>{{ app.influencer.channel_name  }} - {{ app.influencer.get_channel_niche_display  }}</td>
+          <td>
+            {% if app.amount %}
+              {{ app.amount }}
+            {% else %}
+              Free of cost
+            {% endif %}
+          </td>
+          <td>
+            {% if app.is_posted %}
+              ✅
+            {% else %}
+              ❌
+            {% endif %}
+          </td>
+          <td>
+            <form method="post" action="{% url 'brand:handle_payment' %}">
+              {% csrf_token %}
+                <input type="hidden" name="brand" value="{{ brand.brand_id }}" />
+                <input type="hidden" name="influencer" value="{{ app.influencer.influ_id }}" />
+                <input type="hidden" name="appli_id" value="{{ app.appli_id }}" />
+                <input type="hidden" name="amount" value="{{ app.amount|default:0 }}" />
+            <button class="apply-btn">Pay</button>
+            </form>
+          </td>
         </tr>
-        {% if unpaid %} 
-        
-        {% for app in unpaid %}
+      {% empty %}
         <tr>
-            <td>{{ app.post.post_name }}</td>
-            <td>{{ app.amount }}</td>
-            <td>
-                {% if app.is_posted  %}
-                    Yes
-                {% else %}
-                    No
-                {% endif %}
-            </td>
-            <td><button class="apply-btn">Pay</button></td>
+          <td colspan="4">No Pending applications.</td>
         </tr>
-        {% empty %}
-        <tr><td colspan="4">No unpaid applications.</td></tr>
-        {% endfor %}
-        {% else %}
-                <tr><td colspan="4">No unpaid applications.</td></tr>
-        
-        {% endif %}
-    </table>
-{% endblock content %}
+      {% endfor %}
+    {% else %}
+      <tr>
+        <td colspan="4">No pending applications.</td>
+      </tr>
+    {% endif %}
+  </table>
+{% endblock %}
