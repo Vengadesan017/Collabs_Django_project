@@ -43,7 +43,7 @@ body {
     }
 
     .form-group input, .form-group select {
-      width: 100%;
+      width: 93%;
       padding: 10px;
       border-radius: 6px;
       border: 1px solid #aaa;
@@ -61,7 +61,8 @@ body {
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 15px;
+      margin-top: 10px;
+      margin-bottom: 15px;
     }
 
     .conditional-fields {

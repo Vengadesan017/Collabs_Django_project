@@ -12,8 +12,9 @@
     /* Sidebar */
     .sidebar {
       width: 220px;
-      background-color: white;
+      background-color: #000;
       border-right: 1px solid #ddd;
+      color: #fff;
       display: flex;
       flex-direction: column;
       padding-top: 20px;
@@ -37,10 +38,12 @@ a{
       text-align: left;
       font-size: 16px;
       cursor: pointer;
-      width: 100%;
+      width: 82%;
+      color: #fff;
     }
     .sidebar a:hover {
       background-color: #f0f0f0;
+      color: #000;
     }
 
     /* Main content */
@@ -57,10 +60,9 @@ a{
 
     .topbar .tab {
       padding: 8px 12px;
-      background-color: #f0f0f0;
-      border-radius: 6px;
-      font-size: 14px;
+      font-size: 16px;
       margin-right: 10px;
+      background-color: #f5f5f5;
     }
 
     .form-group {
@@ -74,13 +76,18 @@ a{
     }
 
     input[type="text"],
-    input[type="number"] {
+    input[type="number"],
+    input[type="file"],
+    input[type="url"],
+    textarea
+     {
       width: 100%;
       padding: 12px 15px;
       border: 1px solid #ccc;
       border-radius: 12px;
       background-color: #f4f4f4;
       box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      margin: 2px;
     }
     textarea{
       width: 100%;
@@ -112,10 +119,11 @@ a{
 
 
         .button {
-  background-color: #000000;
-  border: none;
-  border-radius: 50px;
-  color: white;
+  background-color: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+
+  color: #000;
   padding: 9px 20px;
   text-align: center;
   text-decoration: none;
@@ -123,6 +131,11 @@ a{
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+}
+
+.button:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 
@@ -133,7 +146,79 @@ a{
     justify-content: space-between;
 
   }
+
+  .row span {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .row strong{
+    font-size: 14px;
+    color: #555;
+  }
   form{
     display: flex;
 flex-direction: column;
+  }
+
+  h1{
+    font-size: 28px;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  hr{
+    background-color: #d0d0d0;
+  }
+
+  ul{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    list-style-type: none;
+
+    strong{
+      font-weight: 500;
+      font-size: 18px;  
+      color: #000;  
+    }
+  }
+
+  li{
+    padding: 10px 10px 10px 0;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #555;
+  }
+
+    li strong{
+    font-size: Unset;
+    color: #000;
+  }
+
+  .profile-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* max-width: 600px; */
+    width: 80%;
+    row-gap: 10px;
+    column-gap: 20px;
+    padding: 0;
+  }
+
+  .profile-info div {
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .label {
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .value {
+    text-align: right;
   }

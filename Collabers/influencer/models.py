@@ -52,7 +52,7 @@ class Influencer(models.Model):
     wallet = models.IntegerField(default=0,blank=True,null=True)
     
     def __str__(self):
-        return f"{self.channel_name} - {self.channel_niche}"
+        return f"{self.channel_name} - {self.get_channel_niche_display()}"
 
 class Applicant(models.Model):
     appli_id = models.AutoField(primary_key=True)

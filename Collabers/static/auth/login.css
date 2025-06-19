@@ -43,7 +43,7 @@ body {
     }
 
     .form-group input {
-      width: 100%;
+      width: 93%;
       padding: 10px;
       border-radius: 6px;
       border: 1px solid #aaa;
@@ -62,6 +62,7 @@ body {
       border-radius: 6px;
       cursor: pointer;
       margin-top: 10px;
+      margin-bottom: 15px;
     }
 
     .or {

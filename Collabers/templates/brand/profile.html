@@ -12,8 +12,16 @@
 {% endblock %}
 {% block content %}
   <!-- templates/brand/profile.html -->
-  <h2>Brand Profile</h2>
-  <p>Name: {{ brand.brand_name }}</p>
-  <p>Niche: {{ brand.get_brand_niche_display }}</p>
-  <p>Wallet Balance: ₹{{ brand.wallet }}</p>
+  <ul class="profile-info">
+    <li>
+      <strong>Name:</strong> {{ brand.brand_name }}
+    </li>
+    <li>
+      <strong>Niche:</strong> {{ brand.get_brand_niche_display }}
+    </li>
+    <li>
+      <strong>Wallet Balance:</strong> ₹{{ brand.wallet }}
+    </li>
+
+  </ul>
 {% endblock %}

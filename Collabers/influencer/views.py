@@ -12,7 +12,7 @@ from django.db.models import Count, Subquery, OuterRef
 # Create your views here.
 from .predictor.utils import predict_efficiency
 def create_applicant_with_prediction(influencer, post):
-    prediction = predict_efficiency(influencer)
+    prediction = predict_efficiency(influencer, post)
     
     applicant = Applicant.objects.create(
         influencer=influencer,

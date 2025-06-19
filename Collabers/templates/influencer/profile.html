@@ -13,7 +13,11 @@
 {% endblock %}
 {% block content %}
   <h1>My Profile</h1>
-  <ul>
+  {% if influencer.channel_thumbnail_url %}
+  
+  <img src="{{influencer.channel_thumbnail_url}}" alt="">
+  {% endif %}
+  <ul class="profile-info">
     <li>
       <strong>Channel Name:</strong> {{ influencer.channel_name }}
     </li>
@@ -21,7 +25,7 @@
       <strong>Channel ID:</strong> {{ influencer.channel_id }}
     </li>
     <li>
-      <strong>Niche:</strong> {{ influencer.channel_niche }}
+      <strong>Niche:</strong> {{ influencer.get_channel_niche_display }}
     </li>
     <li>
       <strong>Followers:</strong> {{ influencer.channel_follower }}
@@ -34,6 +38,18 @@
     </li>
     <li>
       <strong>Average Comments:</strong> {{ influencer.channel_avg_comments }}
+    </li>
+    <li>
+      <strong>Total view:</strong> {{ influencer.channel_total_views }}
+    </li>
+    <li>
+      <strong>Total Video count:</strong> {{ influencer.channel_video_count }}
+    </li>
+    <li>
+      <strong>Average Comments:</strong> {{ influencer.channel_avg_comments }}
+    </li>
+    <li>
+      <strong>Channel Description:</strong> {{ influencer.channel_description }}
     </li>
     <li>
       <strong>Wallet:</strong> ₹{{ influencer.wallet }}
