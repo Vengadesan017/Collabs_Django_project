@@ -1,5 +1,6 @@
 /environment
 Collabers/media/
+/temp
 # Collabers/media/*
 # !media/user_data/
 # !media/user_data/**/*
