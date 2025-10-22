@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup - Collabers</title>
+  <link rel="stylesheet"  href="{% static 'auth/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'influencer/error.css' %}" />
+</head>
+<body>
+  
+  {% if messages %}
+  {% for message in messages %}
+  <div class='alert alert-{{ message.tags }}'>
+    <span class="closebtn">&times;</span>
+    {{ message }}
+  </div>    
+  {% endfor %}
+  {% endif %}
+  
+
+  <div class="signup-box">
+    <h2>COLLABERS</h2>
+    <h2>Verify your email</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label>Enter OTP:</label>
+      <input type="number" name="otp" required>
+      <button type="submit">Verify</button>
+    </form>
+
+  </div>
+
+  <script>
+    const roleSelect = document.getElementById('roleSelect');
+    const influencerFields = document.getElementById('influencerFields');
+    const brandFields = document.getElementById('brandFields');
+
+    roleSelect.addEventListener('change', function () {
+      const role = roleSelect.value;
+
+      // Hide all initially
+      influencerFields.style.display = 'none';
+      brandFields.style.display = 'none';
+
+      if (role === 'influencer') {
+        influencerFields.style.display = 'block';
+      } else if (role === 'brand') {
+        brandFields.style.display = 'block';
+      }
+      // Admin needs no additional fields
+    });
+  </script>
+</body>
+</html>

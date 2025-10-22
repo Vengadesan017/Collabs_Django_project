@@ -7,3 +7,4 @@ class AuthsConfig(AppConfig):
 
     def ready(self):
         import auths.signals  # this connects your signal handler
+        # import Collabers.auths.utils  # ensure utility functions are loaded

@@ -74,44 +74,78 @@
       <th>Process Payment</th>
     </tr>
     {% if unpaid %}
-      {% for app in unpaid %}
-        <tr>
-          <td>{{ app.post.post_name }}</td>
-          <td>{{ app.influencer.channel_name  }} - {{ app.influencer.get_channel_niche_display  }}</td>
-          <td>
-            {% if app.amount %}
-              {{ app.amount }}
-            {% else %}
-              Free of cost
-            {% endif %}
-          </td>
-          <td>
-            {% if app.is_posted %}
-              ✅
-            {% else %}
-              ❌
-            {% endif %}
-          </td>
-          <td>
-            <form method="post" action="{% url 'brand:handle_payment' %}">
-              {% csrf_token %}
-                <input type="hidden" name="brand" value="{{ brand.brand_id }}" />
-                <input type="hidden" name="influencer" value="{{ app.influencer.influ_id }}" />
-                <input type="hidden" name="appli_id" value="{{ app.appli_id }}" />
-                <input type="hidden" name="amount" value="{{ app.amount|default:0 }}" />
-            <button class="apply-btn">Pay</button>
-            </form>
-          </td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="4">No Pending applications.</td>
-        </tr>
-      {% endfor %}
+{% for app in unpaid %}
+<tr>
+  <td>{{ app.post.post_name }}</td>
+  <td>
+    {{ app.influencer.channel_name }} - {{ app.influencer.get_channel_niche_display }}
+  </td>
+  <td>
+    {% if app.amount %}
+      ₹{{ app.amount }}
+    {% else %}
+      Free of cost
+    {% endif %}
+  </td>
+  <td>
+    {% if app.is_posted %}
+      ✅
+    {% else %}
+      ❌
+    {% endif %}
+  </td>
+  <td>
+    <button class="show-upi-btn" data-target="upi-{{ app.appli_id }}">Pay</button>
+    
+    <div id="upi-{{ app.appli_id }}" style="display:none; margin-top:10px;">
+      {% if app.influencer.upi_qr_code %}
+        {% if app.influencer.upi_is_pdf %}
+          <a href="{{ app.influencer.upi_qr_code.url }}" target="_blank">View UPI PDF</a>
+        {% else %}
+          <img src="{{ app.influencer.upi_qr_code.url }}" alt="UPI QR" width="350">
+        {% endif %}
+        <form method="post" action="{% url 'brand:handle_payment' %}">
+          {% csrf_token %}
+          <input type="hidden" name="brand" value="{{ brand.brand_id }}" />
+          <input type="hidden" name="influencer" value="{{ app.influencer.influ_id }}" />
+          <input type="hidden" name="appli_id" value="{{ app.appli_id }}" />
+          <input type="hidden" name="amount" value="{{ app.amount|default:0 }}" />
+          <button type="submit" class="apply-btn">Confirm Payment</button>
+        </form>
+      {% else %}
+        <p>UPI not uploaded</p>
+      {% endif %}
+    </div>
+  </td>
+</tr>
+{% endfor %}
+
     {% else %}
       <tr>
         <td colspan="4">No pending applications.</td>
       </tr>
     {% endif %}
   </table>
+
+  <script>
+document.querySelectorAll('.show-upi-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-target');
+        const upiDiv = document.getElementById(targetId);
+
+        // Hide all other UPI divs
+        document.querySelectorAll('div[id^="upi-"]').forEach(function(div) {
+            if(div.id !== targetId) div.style.display = 'none';
+        });
+
+        // Toggle the selected UPI div
+        if(upiDiv.style.display === 'none') {
+            upiDiv.style.display = 'block';
+        } else {
+            upiDiv.style.display = 'none';
+        }
+    });
+});
+</script>
+
 {% endblock %}

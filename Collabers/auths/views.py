@@ -11,44 +11,117 @@ from django.contrib import messages
 import random
 from decimal import Decimal
 
+
+from auths.models import Account
+from .utils import send_otp_email  # your OTP email function
+from django.contrib.auth.models import User
+
+
 def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            # Save user but do not activate yet
+            user = form.save(commit=False)
+            user.is_active = False  # deactivate until OTP verification
+            user.save()
             
-            # Create Account record for the user
+            # Create Account record
             user_type = request.POST.get("role")
             acc = Account.objects.create(user=user, user_type=user_type)
             
-            login(request, user)
-            # Redirect to the appropriate page based on user type
+            # Generate OTP and send email
+            # acc.otp_code = str(random.randint(100000, 999999))
+            acc.generate_otp()
+            acc.save()
+            try:
+                send_otp_email(user.email, acc.otp_code)
+            except Exception as e:
+                print(f"[ERROR] Could not send OTP: {e}")
+                messages.warning(request, "OTP email could not be sent. Please try again later.")
+
+            
+            # Save user ID and role in session to use after verification
+            request.session['otp_user_id'] = user.id
+            request.session['otp_acc_id'] = acc.account_id
+            request.session['user_type'] = user_type
+            request.session['extra_data'] = {
+                'brand_name': request.POST.get("brand_name"),
+                'brand_niche': request.POST.get("brand_niche"),
+                'influencer_channel_name': request.POST.get("influencer_channel_name"),
+                'influencer_channel_id': request.POST.get("influencer_channel_id"),
+                'influencer_niche': request.POST.get("influencer_niche"),
+            }
+            
+            messages.success(request, "OTP sent to your email. Verify to continue.")
+            return redirect('auth:verify_otp')  # new OTP verification page
+        
+        else:
+            messages.error(request, form.errors)        
+            return redirect("auth:signup")
+    
+    else:
+        form = SignUpForm()
+    return render(request, 'auth/signup.html', {'form': form, 'brand': BrandProfileForm()})
+
+
+def verify_otp_view(request):
+    user_id = request.session.get('otp_user_id')
+    acc_id = request.session.get('otp_acc_id')
+    user_type = request.session.get('user_type')
+    extra_data = request.session.get('extra_data', {})
+
+    if not user_id:
+        return redirect('auth:signup')
+    
+    user = User.objects.get(id = user_id)
+    acc = Account.objects.get(account_id=acc_id)
+    
+    # print(user_id,acc)
+    if request.method == 'POST':
+        otp_input = request.POST.get('otp')
+        print(otp_input,"----",acc.otp_code)
+        if otp_input == acc.otp_code:
+            # Activate user
+            user.is_active = True
+            acc.is_verified = True
+            # acc.otp_code = ''
+            acc.save()
+            user.save()
+            
+            # Create related records
             if user_type == 'brand':
                 Brand.objects.create(
                     brand_acc=acc,
-                    brand_name=request.POST.get("brand_name"),
-                    brand_niche=request.POST.get("brand_niche")
+                    brand_name=extra_data.get('brand_name'),
+                    brand_niche=extra_data.get('brand_niche')
                 )
-                return redirect('brand:post')  
+                login(request, user)
+                return redirect('brand:post')
+            
             elif user_type == 'influencer':
                 Influencer.objects.create(
                     influ_acc=acc,
-                    channel_name=request.POST.get("influencer_channel_name"),
-                    channel_id=request.POST.get("influencer_channel_id"),
-                    channel_niche=request.POST.get("influencer_niche")
+                    channel_name=extra_data.get('influencer_channel_name'),
+                    channel_id=extra_data.get('influencer_channel_id'),
+                    channel_niche=extra_data.get('influencer_niche')
                 )
-                return redirect('influencer:collabs')  
+                login(request, user)
+                return redirect('influencer:collabs')
+            
             elif user_type == 'admin':
-                return redirect('admin') 
+                login(request, user)
+                return redirect('admin')
+            
             else:
-                return redirect('auth:login') 
+                login(request, user)
+                return redirect('auth:login')
             
         else:
-            messages.error(request, form.errors)        
-            redirect("auth:signup")
-    else:
-        form = SignUpForm()
-    return render(request, 'auth/signup.html', {'form': form, 'brand':BrandProfileForm()})
+            messages.error(request, "Invalid OTP. Try again.")
+    
+    return render(request, 'auth/verify_otp.html')
+
 
 def login_view(request):
     if request.method == 'POST':

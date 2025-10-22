@@ -102,4 +102,22 @@
       </tr>
     {% endfor %}
   </table>
+
+  <h2>My UPI Account</h2>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if influencer.upi_qr_code %}
+            {% if influencer.upi_qr_code.url|lower|slice:"-4:" == ".pdf" %}
+                <p>Current file: <a href="{{ influencer.upi_qr_code.url }}" target="_blank">View PDF</a></p>
+            {% else %}
+                <img src="{{ influencer.upi_qr_code.url }}" class="preview" id="filePreview">
+            {% endif %}
+        {% endif %}
+
+
+        {{ form.as_p }}
+
+        <button type="submit">Upload / Replace</button>
+    </form>
 {% endblock %}

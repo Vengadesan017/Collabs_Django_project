@@ -1,5 +1,5 @@
 from django import forms
-from .models import Applicant
+from .models import Applicant, Influencer
 
 class ApplicantForm(forms.ModelForm):
     class Meta:
@@ -15,4 +15,14 @@ class ApplicantForm(forms.ModelForm):
             'amount': forms.NumberInput(attrs={'class': 'form-control'}),
             'summary': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
             'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        }
+        
+
+
+class FileForm(forms.ModelForm):
+    class Meta:
+        model = Influencer
+        fields = ['upi_qr_code']
+        widgets = {
+            'upi_file': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }

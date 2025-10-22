@@ -1,6 +1,23 @@
 from django.db import models
 from auths.models import Account
 
+from django.core.exceptions import ValidationError
+
+
+import os
+
+def validate_file(file):
+    # Max size 5MB
+    max_size = 5 * 1024 * 1024  # 5 MB
+    if file.size > max_size:
+        raise ValidationError("File size must be under 5MB")
+    
+    # Allowed extensions
+    valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.pdf']
+    ext = os.path.splitext(file.name)[1].lower()
+    if ext not in valid_extensions:
+        raise ValidationError("Unsupported file type. Only images and PDFs are allowed.")
+    
 NICHE_CHOICES = [
     ('food', 'Food & Beverage'),
     ('it', 'Technology / IT'),
@@ -50,7 +67,14 @@ class Influencer(models.Model):
     channel_avg_comments = models.BigIntegerField(blank=True, null=True)
     
     wallet = models.IntegerField(default=0,blank=True,null=True)
-    
+    upi_qr_code = models.FileField(
+        upload_to='influencer_upi_qr_codes/',
+        validators=[validate_file],
+        blank=True,
+        null=True
+    )
+
+
     def __str__(self):
         return f"{self.channel_name} - {self.get_channel_niche_display()}"
 

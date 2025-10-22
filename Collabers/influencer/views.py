@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from brand.models import Post
 from .models import Influencer, Applicant
-from .forms import ApplicantForm
+from .forms import ApplicantForm, FileForm
 from auths.models import Account
 from django.db.models import Q
 from django.db.models import Count, Subquery, OuterRef
@@ -159,10 +159,25 @@ def Payment_view(request):
     paid_apps = Applicant.objects.filter(influencer=influencer, is_payed=True)
     unpaid_apps = Applicant.objects.filter(influencer=influencer, is_payed=False)
 
+
+    if request.method == 'POST':
+        form = FileForm(request.POST, request.FILES, instance=influencer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "UPI file uploaded successfully!")
+            # return redirect('upload_upi_file', brand_id=brand_id)
+        else:
+            messages.error(request, "Please fix the errors below.")
+    # else:
+    form = FileForm(instance=Influencer)
+        
     return render(request, 'influencer/payment.html', {
         'paid': paid_apps,
-        'unpaid': unpaid_apps
+        'unpaid': unpaid_apps,
+        'form' : form,
+        'influencer' :influencer,
     })
+
 
 
 @login_required

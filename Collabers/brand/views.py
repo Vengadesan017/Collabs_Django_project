@@ -179,9 +179,7 @@ def handle_payment(request):
         influencer = get_object_or_404(Influencer, influ_id=influencer_id)
         applicant = get_object_or_404(Applicant, appli_id=appli_id)
 
-        print(brand)
-        print(applicant)
-        print(influencer)
+
         if brand.wallet is None or brand.wallet < amount:
             messages.error(request, "Insufficient funds in your wallet.")
             return redirect("brand:payment")

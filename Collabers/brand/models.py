@@ -1,6 +1,8 @@
 from django.db import models
 
 from auths.models import Account
+from django.core.exceptions import ValidationError
+
 NICHE_CHOICES = [
     ('food', 'Food & Beverage'),
     ('it', 'Technology / IT'),
@@ -24,6 +26,21 @@ NICHE_CHOICES = [
     ('luxury', 'Luxury Goods'),
 ]
 
+def validate_file(file):
+    # Max size 5MB
+    max_size = 5 * 1024 * 1024  # 5 MB in bytes
+    if file.size > max_size:
+        raise ValidationError("File size must be under 5MB")
+    
+    # Allowed content types
+    valid_mime_types = [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'application/pdf'
+    ]
+    if file.content_type not in valid_mime_types:
+        raise ValidationError("Unsupported file type. Only images and PDFs are allowed.")
 
 # Create your models here.
 class Brand(models.Model):
@@ -31,8 +48,9 @@ class Brand(models.Model):
     brand_acc = models.OneToOneField(Account, on_delete=models.CASCADE)
     brand_name = models.CharField(max_length=100)
     brand_niche = models.CharField(max_length=50, choices=NICHE_CHOICES)
-    wallet = models.IntegerField(default=0,blank=True,null=True)
-    
+    wallet = models.IntegerField(default=1000000,blank=True,null=True)
+    upi_qr_code = models.ImageField(upload_to='brand_upi_qr_codes/',validators=[validate_file], blank=True, null=True)  # New field
+
     def __str__(self):
         return f"{self.brand_name} - {self.get_brand_niche_display()}"
     

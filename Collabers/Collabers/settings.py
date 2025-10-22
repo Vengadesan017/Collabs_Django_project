@@ -135,6 +135,10 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -154,3 +158,19 @@ LOGIN_URL = 'auth:login'
 
 
 YOUTUBE_API_KEY = "AIzaSyD2BazAbDMiVeHh7MM6Ge7d9bVFnp0Fag4"
+
+
+
+# Email Configuration
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'cloudluffy123@gmail.com'
+EMAIL_HOST_PASSWORD = 'rnwhwbidppewuzmz'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+TWITTER_BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAJ%2FW4wEAAAAA3SmM3HLAYFn%2FBKCN5cfBA%2BL3l9s%3DG8CvJodjzWUrdex8BPcqroZlrSGI1CcQAzJx7N9pfLSjQHPNiU'
+
